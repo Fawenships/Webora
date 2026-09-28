@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -100,18 +101,56 @@ details[open] p,.ok-box,#cf h3{animation:rise .35s ease both}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
+
 <body>
 <div id="app"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+
 <script>
-// Configuration Supabase : renseigner les deux valeurs (Project Settings > API). Vide = mode local.
-var SB_URL='',SB_KEY='';
-var sb=(window.supabase&&SB_URL&&SB_KEY)?window.supabase.createClient(SB_URL,SB_KEY):null;
+// ============================================================
+// CONFIGURATION SUPABASE
+// ============================================================
+// Mets ici le Project URL et la clé anon/publishable
+// du projet Supabase que tu utilises pour Webora.
+//
+// IMPORTANT : ne mets jamais la service_role key ici.
+var SB_URL='';
+var SB_KEY='';
+
+var sb=(window.supabase&&SB_URL&&SB_KEY)
+  ?window.supabase.createClient(SB_URL,SB_KEY)
+  :null;
+
+
+// ============================================================
+// CATÉGORIES
+// ============================================================
 var CATS={
-boutique:{n:'Boutique',d:'Vendez vos produits en ligne',it:['Produit phare','Nouveautés','Promotions'],b:'Voir la collection'},
-restaurant:{n:'Restaurant',d:'Menu, horaires et réservations',it:['Entrées','Plats','Desserts'],b:'Voir le menu'},
-salon:{n:'Salon',d:'Services et prise de rendez-vous',it:['Coiffure','Soins','Beauté'],b:'Prendre rendez-vous'},
+boutique:{
+  n:'Boutique',
+  d:'Vendez vos produits en ligne',
+  it:['Produit phare','Nouveautés','Promotions'],
+  b:'Voir la collection'
+},
+restaurant:{
+  n:'Restaurant',
+  d:'Menu, horaires et réservations',
+  it:['Entrées','Plats','Desserts'],
+  b:'Voir le menu'
+},
+salon:{
+  n:'Salon',
+  d:'Services et prise de rendez-vous',
+  it:['Coiffure','Soins','Beauté'],
+  b:'Prendre rendez-vous'
+}
 };
+
+
+// ============================================================
+// MODÈLES
+// ============================================================
 var TPL=[
 {id:'atelier',c:'boutique',n:'Atelier',bg:'#FFFFFF',fg:'#1A1A1A',ac:'#1A1A1A',ff:'Georgia,serif',l:'c'},
 {id:'vitrine',c:'boutique',n:'Vitrine',bg:'#F3EFE8',fg:'#3B2F26',ac:'#8A5A2B',ff:'system-ui,sans-serif',l:'s'},
@@ -121,97 +160,1240 @@ var TPL=[
 {id:'saveur',c:'restaurant',n:'Saveur',bg:'#FFF8E7',fg:'#2A2A2A',ac:'#E07A1F',ff:'system-ui,sans-serif',l:'s'},
 {id:'douceur',c:'salon',n:'Douceur',bg:'#FAF0F0',fg:'#3A2A2E',ac:'#B8607A',ff:'Georgia,serif',l:'c'},
 {id:'studio',c:'salon',n:'Studio',bg:'#F2F4F3',fg:'#1D2A26',ac:'#2F6B5A',ff:'system-ui,sans-serif',l:'s'},
-{id:'eclat',p:1,c:'salon',n:'Éclat',bg:'#F7F1FA',fg:'#2B1B33',ac:'#7A3FA0',ff:'system-ui,sans-serif',l:'s'}];
-var S={cat:'boutique',tpl:'atelier',name:'Maison Delva',slogan:'Des produits choisis avec soin',desc:'Nous accompagnons nos clients depuis 2019.',color:'',phone:'+509 0000 0000',email:'contact@exemple.com',wa:'',addr:'',ig:'',fb:'',logo:'',img:'',q:'',f:'',sub:'',logged:false,pub:false,dev:'d'};
-var SITES=[{n:'Kédassa Bazar',u:'kedassa.webora.com',s:'Publié',v:'1 240 visites'},{n:'Neyoo',u:'neyoo.webora.com',s:'Publié',v:'860 visites'},{n:'Brouillon salon',u:'-',s:'Brouillon',v:'-'}];
-var $=function(s){return document.querySelector(s)};
-function tpl(){return TPL.filter(function(t){return t.id===S.tpl})[0]||TPL[0]}
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function bind(k){return 'oninput="S.'+k+'=this.value;upd()"'}
-function site(){
-var t=tpl(),c=CATS[t.c],ac=S.color||t.ac,txt=(t.bg==='#0E0E10'||t.bg==='#16201B')?t.fg:t.fg;
-var btnFg=(t.bg==='#0E0E10')?'#0E0E10':'#fff';
-return '<div class="site" style="background:'+t.bg+';color:'+t.fg+';font-family:'+t.ff+'">'+
-'<nav><span>'+(S.logo?'<img src="'+S.logo+'" alt="" style="height:26px;vertical-align:middle;margin-right:8px">':'')+esc(S.name)+'</span><span style="opacity:.6;font-weight:400">Accueil &nbsp; À propos &nbsp; Contact</span></nav>'+
-'<div class="h '+(t.l==='c'?'c':'')+'"><h1>'+esc(S.slogan)+'</h1><p>'+esc(S.desc)+'</p><span class="b" style="background:'+ac+';color:'+btnFg+'">'+c.b+'</span></div>'+
-(S.img?'<img src="'+S.img+'" alt="" style="width:100%;max-height:220px;object-fit:cover;display:block;margin-bottom:24px">':'')+'<div class="it">'+c.it.map(function(_,n){var x=getIt(n);return '<div style="border-color:'+ac+'55"><b>'+esc(x.t)+'</b><br><span style="opacity:.6;font-size:14px">'+esc(x.d||'Description à personnaliser')+'</span></div>'}).join('')+'</div>'+
-'<div class="ct" style="border-color:'+ac+'44">'+[S.phone,S.wa&&'WhatsApp '+S.wa,S.email,S.addr,S.ig&&'Instagram '+S.ig,S.fb&&'Facebook '+S.fb].filter(Boolean).map(function(x){return esc(x)}).join(' &nbsp;|&nbsp; ')+'</div></div>'}
-function thumb(t){return '<div class="thumb" style="background:'+t.bg+'"><i style="background:'+t.fg+';width:60%"></i><i style="background:'+t.ac+';width:30%"></i><i style="background:'+t.fg+';width:80%;opacity:.3"></i></div>'}
-function shell(on,body){
-var L=[['dashboard','Tableau de bord'],['categories','Nouveau site'],['editeur','Éditeur'],['apercu','Aperçu'],['publication','Publication'],['parametres','Paramètres'],['aide','Aide'],['contact','Contact']];
-return '<div class="shell"><aside class="side"><a class="logo" href="#/">Webora</a>'+L.map(function(l){return '<a href="#/'+l[0]+'" class="'+(l[0]===on?'on':'')+'">'+l[1]+'</a>'}).join('')+'<a href="#/" onclick="logout()" style="margin-top:auto">Déconnexion</a></aside><main class="main">'+body+'</main></div>'}
-function head(){return '<div class="wrap"><div class="top"><a class="logo" href="#/">Webora</a><nav><a href="#/aide" style="padding:10px 8px">Comment ça marche</a><a class="btn" href="#/connexion">Connexion</a><a class="btn p" href="#/inscription">Créer un compte</a></nav></div>'}
-var V={
-'':function(){return head()+'<section class="hero"><h1>Votre site professionnel, en quelques minutes.</h1><p>Choisissez un modèle, personnalisez vos textes et vos couleurs, puis publiez. Aucun code nécessaire.</p><div class="row"><a class="btn p lg" href="#/inscription">Commencer gratuitement</a><a class="btn lg" href="#/connexion">Se connecter</a></div></section>'+
-'<section class="steps"><div><h3>Choisissez</h3><p>Boutique, restaurant ou salon de beauté.</p></div><div><h3>Sélectionnez</h3><p>Neuf modèles conçus pour votre activité.</p></div><div><h3>Personnalisez</h3><p>Textes, couleurs et coordonnées en direct.</p></div><div><h3>Publiez</h3><p>Une adresse en votre-nom.webora.com.</p></div></section><section style="padding:56px 0 96px;border-top:1px solid var(--line)"><h2 style="font-size:32px;margin-bottom:24px">Des abonnements de 3 mois</h2><div class="plans"><div class="stat"><h3>BASIQUE</h3><p class="sub" style="margin:6px 0 0">Pour un site simple</p><span class="tag ok">1er mois offert</span><ul><li>Abonnement de 3 mois</li><li>Un site simple</li><li>Sous-domaine webora.com</li><li>Modèles inclus</li><li>Branding Webora</li></ul></div><div class="stat"><h3>PRO</h3><p class="sub" style="margin:6px 0 0">Pour un site plus grand</p><ul><li>Abonnement de 3 mois</li><li>Modèles premium</li><li>Plus de pages</li><li>Sans branding</li><li>Statistiques</li></ul></div><div class="stat"><h3>PRO MAX</h3><p class="sub" style="margin:6px 0 0">Tout inclus, pour un usage professionnel</p><ul><li>Abonnement de 3 mois</li><li>Tout le plan Pro</li><li>Nom de domaine dédié</li><li>Plus de choix de modèles et d’options</li><li>Plusieurs sites</li><li>Catalogue et boutique en ligne</li><li>Statistiques avancées</li></ul></div></div><p class="note">Le premier mois du plan Basique est offert. Tarifs communiqués prochainement.</p></section>'+foot()+'</div>'},
-'inscription':function(){return '<div class="auth"><div class="card"><h2>Créer un compte</h2><label>Nom complet</label><input id="n" autocomplete="name"><label>Adresse e-mail</label><input id="e" type="email" autocomplete="email"><label>Mot de passe</label><input id="p" type="password" autocomplete="new-password"><p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p><button class="btn p" style="width:100%;margin-top:20px" onclick="auth(1)">Créer mon compte</button><p class="note">En créant un compte, vous acceptez les <a href="#/conditions">conditions d’utilisation</a> et la <a href="#/confidentialite">politique de confidentialité</a>.</p><p class="note">Déjà inscrit ? <a href="#/connexion">Se connecter</a></p></div></div>'},
-'connexion':function(){return '<div class="auth"><div class="card"><h2>Connexion</h2><label>Adresse e-mail</label><input id="e" type="email" autocomplete="email"><label>Mot de passe</label><input id="p" type="password" autocomplete="current-password"><p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p><button class="btn p" style="width:100%;margin-top:20px" onclick="auth(0)">Se connecter</button><p class="note">Pas encore de compte ? <a href="#/inscription">Créer un compte</a></p></div></div>'},
-'dashboard':function(){return shell('dashboard','<h1>Tableau de bord</h1><p class="sub">Vos sites et leur activité.</p><div class="stats"><div class="stat"><b>'+sites().length+'</b><span>Sites</span></div><div class="stat"><b>'+sites().filter(function(x){return x.s==='Publié'}).length+'</b><span>Publiés</span></div><div class="stat"><b>2 100</b><span>Visites ce mois</span></div></div><div class="row" style="justify-content:space-between;align-items:center;margin-bottom:16px"><h3>Mes sites</h3><a class="btn p" href="#/categories">Nouveau site</a></div><div class="list">'+sites().map(function(s){return '<div class="li"'+(s.id?' onclick="openSite(\''+s.id+'\')" style="cursor:pointer"':'')+'><div><b>'+esc(s.n)+'</b><small>'+s.u+' &nbsp; '+s.v+'</small></div><span class="tag '+(s.s==='Publié'?'ok':'')+'">'+s.s+'</span></div>'}).join('')+(sites().length?'':'<div class="li"><span style="color:var(--mut)">Aucun site pour le moment. Cliquez sur « Nouveau site ».</span></div>')+'</div>')},
-'categories':function(){return shell('categories','<h1>Quel type de site ?</h1><p class="sub">Choisissez la catégorie qui correspond à votre activité.</p><div class="grid">'+Object.keys(CATS).map(function(k){return '<button class="opt" onclick="S.chg=0;S.cat=\''+k+'\';go(\'modeles\')"><h3>'+CATS[k].n+'</h3><p>'+CATS[k].d+'</p></button>'}).join('')+'</div>')},
-'modeles':function(){var q=S.q.toLowerCase(),list=TPL.filter(function(t){return (S.cat==='tous'||t.c===S.cat)&&(!q||(t.n+' '+CATS[t.c].n).toLowerCase().indexOf(q)>-1)&&(!S.f||(S.f==='p')===!!t.p)});
-return shell('categories','<h1>Choisissez un modèle</h1><p class="sub">9 modèles disponibles. Vous pourrez tout modifier ensuite.</p><div class="tabs"><button class="btn '+(S.cat==='tous'?'on':'')+'" onclick="S.cat=\'tous\';route()">Tous</button>'+Object.keys(CATS).map(function(k){return '<button class="btn '+(S.cat===k?'on':'')+'" onclick="S.cat=\''+k+'\';route()">'+CATS[k].n+'</button>'}).join('')+'</div><div class="row" style="margin-bottom:24px"><input type="search" placeholder="Rechercher un modèle" value="'+esc(S.q)+'" onchange="S.q=this.value;route()" style="max-width:280px"><select onchange="S.f=this.value;route()" style="max-width:180px"><option value="">Tous</option><option value="g"'+(S.f==='g'?' selected':'')+'>Inclus</option><option value="p"'+(S.f==='p'?' selected':'')+'>Premium</option></select></div><div class="grid">'+list.map(function(t){return '<button class="opt" onclick="S.tpl=\''+t.id+'\';S.color=\'\';S.it=null;S.chg?changeTpl():newSite()">'+thumb(t)+'<h3>'+t.n+'</h3><p>'+CATS[t.c].n+' <span class="tag">'+(t.p?'Premium':'Inclus')+'</span></p></button>'}).join('')+'</div>'+(list.length?'':'<p class="sub">Aucun modèle ne correspond à cette recherche.</p>'))},
-'editeur':function(){var t=tpl();return shell('editeur','<h1>Éditeur</h1><p class="sub">Modèle '+t.n+'. Les modifications apparaissent en direct.</p><div class="ed"><div class="panel"><label>Nom de l\'activité</label><input value="'+esc(S.name)+'" '+bind('name')+'><label>Slogan</label><input value="'+esc(S.slogan)+'" '+bind('slogan')+'><label>Description</label><textarea '+bind('desc')+'>'+esc(S.desc)+'</textarea><label>Couleur d\'accent</label><input type="color" value="'+(S.color||t.ac)+'" style="height:44px;padding:4px" oninput="S.color=this.value;upd()">'+itemsForm()+'<label>Téléphone</label><input value="'+esc(S.phone)+'" '+bind('phone')+'><label>E-mail</label><input value="'+esc(S.email)+'" '+bind('email')+'><label>WhatsApp</label><input value="'+esc(S.wa)+'" '+bind('wa')+'><label>Adresse</label><input value="'+esc(S.addr)+'" '+bind('addr')+'><label>Instagram</label><input value="'+esc(S.ig)+'" '+bind('ig')+'><label>Facebook</label><input value="'+esc(S.fb)+'" '+bind('fb')+'><label>Logo (2 Mo maximum)</label><input type="file" accept="image/*" onchange="up(\'logo\',this)"><label>Image principale (2 Mo maximum)</label><input type="file" accept="image/*" onchange="up(\'img\',this)"><div class="row" style="margin-top:20px"><a class="btn" href="#/modeles" onclick="S.chg=1">Changer de modèle</a><a class="btn p" href="#/apercu">Aperçu</a></div></div><div class="frame"><div class="bar">Aperçu en direct</div><div id="live">'+site()+'</div></div></div>')},
-'apercu':function(){return shell('apercu','<div class="row" style="justify-content:space-between;align-items:center"><div><h1>Aperçu</h1><p class="sub">Vérifiez le rendu avant de publier.</p></div><div class="row"><button class="btn '+(S.dev==='d'?'on':'')+'" onclick="S.dev=\'d\';route()">Ordinateur</button><button class="btn '+(S.dev==='m'?'on':'')+'" onclick="S.dev=\'m\';route()">Mobile</button><a class="btn" href="#/editeur">Modifier</a><a class="btn p" href="#/publication">Continuer</a></div></div><div class="frame" style="max-width:'+(S.dev==='m'?'380px':'100%')+'"><div class="bar">'+(esc(S.sub||'monsite')+'.webora.com')+'</div>'+site()+'</div>')},
-'aide':function(){var st=[['1. Choisir','Sélectionnez votre type d’activité : boutique, restaurant ou salon de beauté.'],['2. Sélectionner','Chaque catégorie propose 3 modèles, inclus ou premium. Vous pouvez en changer à tout moment.'],['3. Personnaliser','Modifiez les textes, les couleurs, le logo, les images et les coordonnées. L’aperçu se met à jour en direct.'],['4. Publier','Choisissez une adresse en monsite.webora.com et votre site est en ligne.']];
-var fq=[['Créer un compte','Cliquez sur « Créer un compte », entrez votre adresse e-mail et un mot de passe de 6 caractères minimum.'],['Choisir ou changer de modèle','Dans « Nouveau site », choisissez une catégorie puis un modèle. Dans l’éditeur, le bouton « Changer de modèle » vous permet d’en essayer un autre.'],['Modifier les textes et les couleurs','Dans l’éditeur, remplissez les champs à gauche : nom, slogan, description, couleur d’accent. Le site à droite change immédiatement.'],['Ajouter un logo et une image','Dans l’éditeur, utilisez les champs « Logo » et « Image principale ». Le fichier doit être une image de 2 Mo maximum.'],['Vérifier le rendu sur mobile','Ouvrez « Aperçu » puis cliquez sur « Mobile ». Revenez à l’éditeur avec « Modifier » si quelque chose ne vous plaît pas.'],['Publier son site','Ouvrez « Publication », entrez votre adresse (3 caractères minimum, en lettres minuscules, chiffres ou tirets), puis cliquez sur « Publier ».'],['Avoir un nom de domaine dédié','Un nom de domaine dédié à votre site, par exemple www.monbusiness.com, est inclus dans le plan Pro Max.'],['Comment fonctionnent les abonnements','Chaque plan est un abonnement de 3 mois. Basique convient aux sites simples et son premier mois est offert. Pro convient aux sites plus grands. Pro Max donne accès à tout, avec un nom de domaine dédié.'],['Retrouver mes sites','Le tableau de bord liste tous vos sites avec leur adresse et leur statut : publié ou brouillon.']];
-var b='<div class="help" style="max-width:760px;padding:32px 0 96px"><h1 style="font-size:clamp(32px,5vw,44px);margin-bottom:8px">Comment ça marche</h1><p class="sub">Créer un site avec Webora ne demande aucune compétence en code.</p><h3 style="margin-bottom:16px">Comment ça fonctionne</h3><div class="list">'+st.map(function(x){return '<div class="li"><div><b>'+x[0]+'</b><small>'+x[1]+'</small></div></div>'}).join('')+'</div><h3 style="margin:40px 0 8px">Comment faire</h3>'+fq.map(function(x){return '<details><summary>'+x[0]+'</summary><p>'+x[1]+'</p></details>'}).join('')+'<div class="row" style="margin-top:32px"><a class="btn p lg" href="#/'+(S.logged?'categories':'inscription')+'">'+(S.logged?'Créer un site':'Commencer gratuitement')+'</a></div></div>';
-return S.logged?shell('aide',b):head()+b+foot()+'</div>'},
-'contact':function(){return pub('contact','<div class="doc" style="max-width:760px;padding:32px 0 64px"><h1>Contact</h1><p class="sub">Une question sur Webora ? Écrivez-nous, nous répondons sous deux jours ouvrables.</p><div class="list" style="margin-bottom:32px"><div class="li"><b>E-mail</b><span>contact@webora.com</span></div><div class="li"><b>WhatsApp</b><span>+509 0000 0000</span></div><div class="li"><b>Développeur</b><span>Fawenbert Regis</span></div><div class="li"><b>Horaires</b><span>Lundi au vendredi, 8 h à 17 h</span></div></div><div id="cf" class="card" style="max-width:100%"><label style="margin-top:0">Nom</label><input id="cn" autocomplete="name"><label>Adresse e-mail</label><input id="ce" type="email" autocomplete="email"><label>Message</label><textarea id="cm"></textarea><p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p><button class="btn p" style="margin-top:16px" onclick="sendMsg()">Envoyer le message</button></div></div>')},
-'confidentialite':function(){return pub('',doc('Politique de confidentialité',[['Données que nous collectons','Votre nom, votre adresse e-mail, votre mot de passe (conservé sous forme chiffrée) et les contenus que vous ajoutez à votre site : textes, logo, images et coordonnées.'],['Pourquoi nous les utilisons','Pour créer et gérer votre compte, afficher et publier votre site, gérer votre abonnement et répondre à vos demandes.'],['Ce qui devient public','Les informations saisies dans votre site (nom de l’activité, téléphone, WhatsApp, adresse, réseaux sociaux) sont visibles par tous dès la publication. Ne publiez que ce que vous souhaitez rendre public.'],['Partage des données','Nous ne vendons pas vos données. Elles ne sont partagées qu’avec les prestataires nécessaires au service, comme l’hébergement et le paiement.'],['Sécurité','Chaque compte n’accède qu’à ses propres sites. Les mots de passe sont chiffrés et les échanges sont protégés.'],['Conservation','Vos données sont conservées tant que votre compte est actif. Vous pouvez demander leur suppression à tout moment.'],['Vos droits','Vous pouvez consulter, corriger ou supprimer vos données en nous écrivant depuis la page Contact.'],['Cookies','Webora utilise uniquement les éléments techniques nécessaires au fonctionnement du service.']]))},
-'conditions':function(){return pub('',doc('Conditions d’utilisation',[['Utilisation du service','Webora permet de créer et publier un site à partir de modèles. Vous fournissez des informations exactes à l’inscription et vous protégez votre mot de passe.'],['Abonnements','Les plans Basique, Pro et Pro Max sont des abonnements de 3 mois. Le premier mois du plan Basique est offert. Les tarifs vous sont communiqués avant toute souscription.'],['Votre contenu','Vous restez propriétaire des textes, logos et images que vous ajoutez, et vous confirmez avoir le droit de les utiliser.'],['Contenus interdits','Il est interdit de publier des contenus illégaux, trompeurs, haineux ou qui portent atteinte aux droits d’autrui. Un site qui ne respecte pas ces règles peut être suspendu.'],['Publication et domaines','Les sites sont publiés sur une adresse en webora.com. Le nom de domaine dédié est réservé au plan Pro Max.'],['Résiliation','Vous pouvez arrêter votre abonnement à tout moment. Il reste actif jusqu’à la fin de la période de 3 mois en cours.'],['Disponibilité','Nous faisons le maximum pour garder le service disponible, sans garantir l’absence d’interruption.'],['Modifications','Nous pouvons mettre à jour ces conditions. Les changements sont indiqués sur cette page.']]))},
-'parametres':function(){return shell('parametres','<h1>Paramètres</h1><p class="sub">Profil et abonnement.</p><div class="card" style="max-width:520px"><label style="margin-top:0">Nom complet</label><input placeholder="Votre nom"><label>Adresse e-mail</label><input type="email" placeholder="vous@exemple.com"><label>Plan actuel</label><div class="li" style="padding:12px 0;border:0"><b>BASIQUE</b><span class="tag ok">1er mois offert</span></div><div class="row" style="margin-top:16px"><button class="btn p">Enregistrer</button><button class="btn">Passer au plan Pro</button></div></div>')},
-'publication':function(){return shell('publication','<h1>Publication</h1><p class="sub">Choisissez l\'adresse de votre site.</p><div class="pub">'+(S.pub?'<div class="ok-box"><h3>Site publié</h3><p class="sub" style="margin:8px 0 16px">Votre site est en ligne à l\'adresse ci-dessous.</p><b>'+esc(S.sub)+'.webora.com</b><div class="row" style="margin-top:20px"><a class="btn" href="#/s/'+esc(S.sub)+'">Voir le site</a><a class="btn p" href="#/dashboard" onclick="S.pub=false">Retour au tableau de bord</a></div></div>':'<label>Adresse du site</label><div class="sd"><input id="sd" value="'+esc(S.sub)+'" placeholder="monbusiness" oninput="S.sub=this.value.toLowerCase().replace(/[^a-z0-9-]/g,\'\')"><span>.webora.com</span></div><p id="er" class="note" style="color:#C0392B;margin:8px 0 0"></p><div class="row" style="margin-top:24px"><a class="btn" href="#/apercu">Retour</a><button class="btn p" onclick="publish()">Publier</button></div>')+'</div>')}
+{id:'eclat',p:1,c:'salon',n:'Éclat',bg:'#F7F1FA',fg:'#2B1B33',ac:'#7A3FA0',ff:'system-ui,sans-serif',l:'s'}
+];
+
+
+// ============================================================
+// ÉTAT
+// ============================================================
+var S={
+cat:'boutique',
+tpl:'atelier',
+name:'Maison Delva',
+slogan:'Des produits choisis avec soin',
+desc:'Nous accompagnons nos clients depuis 2019.',
+color:'',
+phone:'+509 0000 0000',
+email:'contact@exemple.com',
+wa:'',
+addr:'',
+ig:'',
+fb:'',
+logo:'',
+img:'',
+q:'',
+f:'',
+sub:'',
+logged:false,
+pub:false,
+dev:'d'
 };
-function foot(){return '<footer style="border-top:1px solid var(--line);padding:32px 0;display:flex;gap:16px 24px;flex-wrap:wrap;justify-content:space-between;color:var(--mut);font-size:14px"><span>© 2026 Webora. Développé par Fawenbert Regis</span><span style="display:flex;gap:8px 24px;flex-wrap:wrap"><a href="#/aide">Comment ça marche</a><a href="#/contact">Contact</a><a href="#/confidentialite">Confidentialité</a><a href="#/conditions">Conditions d’utilisation</a></span></footer>'}
-function pub(on,b){return S.logged?shell(on,b):head()+b+foot()+'</div>'}
-function doc(t,a){return '<div class="doc" style="max-width:760px;padding:32px 0 64px"><h1>'+t+'</h1><p class="sub" style="margin-bottom:0">Dernière mise à jour : 27 septembre 2026</p>'+a.map(function(x){return '<h3>'+x[0]+'</h3><p>'+x[1]+'</p>'}).join('')+'</div>'}
-function sendMsg(){var n=$('#cn').value.trim(),e=$('#ce').value.trim(),m=$('#cm').value.trim();if(!n||!/^\S+@\S+\.\S+$/.test(e)||m.length<10){$('#er').textContent='Renseignez votre nom, une adresse e-mail valide et un message d’au moins 10 caractères.';return}$('#cf').innerHTML='<h3>Message envoyé</h3><p class="sub" style="margin:8px 0 0">Merci '+esc(n)+'. Nous vous répondrons à '+esc(e)+'.</p>'}
-function up(k,el){var f=el.files[0];if(!f)return;if(f.size>2000000){el.value='';el.previousElementSibling.textContent='Fichier trop lourd : 2 Mo maximum';return}if(sb&&S.uid){var pa=S.uid+'/'+(S.sid||'x')+'-'+k+'-'+Date.now();sb.storage.from('media').upload(pa,f,{contentType:f.type}).then(function(r){if(r.error){el.previousElementSibling.textContent='Envoi impossible (image de 2 Mo maximum)';return}S[k]=sb.storage.from('media').getPublicUrl(pa).data.publicUrl;upd()});return}
-var r=new FileReader();r.onload=function(){S[k]=r.result;upd()};r.readAsDataURL(f)}
-function save(){try{localStorage.setItem('webora',JSON.stringify(S))}catch(e){}}
-function getIt(i){var c=CATS[tpl().c];return (S.it&&S.it[i])||{t:c.it[i],d:''}}
-function setIt(i,k,v){var c=CATS[tpl().c];S.it=S.it||c.it.map(function(x){return{t:x,d:''}});S.it[i][k]=v;upd()}
-function itemsForm(){var l={boutique:'Produit',restaurant:'Plat',salon:'Service'}[tpl().c];return [0,1,2].map(function(n){var x=getIt(n);return '<label>'+l+' '+(n+1)+'</label><input value="'+esc(x.t)+'" oninput="setIt('+n+',\'t\',this.value)" placeholder="Nom"><input style="margin-top:6px" value="'+esc(x.d)+'" oninput="setIt('+n+',\'d\',this.value)" placeholder="Description courte">'}).join('')}
-function sites(){if(sb)return (S.remote||[]).map(function(x){return{id:x.id,n:x.name,u:x.subdomain?x.subdomain+'.webora.com':'-',s:x.published?'Publié':'Brouillon',v:''}});return (S.live?[{n:S.name,u:S.sub+'.webora.com',s:'Publié',v:'0 visite'}]:[]).concat(SITES)}
-function loadSites(){return sb.from('sites').select('id,name,subdomain,published').order('updated_at',{ascending:false}).then(function(r){S.remote=r.data||[]})}
-function logout(){S.logged=false;S.uid=null;S.sid=null;S.remote=[];if(sb)sb.auth.signOut()}
-function content(){var o={};['slogan','desc','color','phone','email','wa','addr','ig','fb','logo','img','it'].forEach(function(k){o[k]=S[k]});return o}
-function persist(){if(!sb||!S.logged||!S.sid)return;clearTimeout(persist.t);persist.t=setTimeout(function(){sb.from('sites').update({name:S.name,template:S.tpl,category:tpl().c,content:content()}).eq('id',S.sid).then(function(){})},800)}
-function newSite(){Object.assign(S,{sid:null,pub:false,name:'Mon activité',slogan:'Votre slogan ici',desc:'Décrivez votre activité en quelques mots.',logo:'',img:'',it:null,sub:''});if(!sb){go('editeur');return}
-sb.from('sites').insert({name:S.name,template:S.tpl,category:tpl().c,content:content()}).select('id').single().then(function(r){if(r.data)S.sid=r.data.id;go('editeur')})}
-function changeTpl(){S.chg=0;persist();go('editeur')}
-function openSite(id){sb.from('sites').select('*').eq('id',id).single().then(function(r){if(r.error)return;var d=r.data;Object.assign(S,{sid:d.id,name:d.name,tpl:d.template,cat:d.category,sub:d.subdomain||'',pub:false,it:null},d.content||{});go('editeur')})}
-function nf(){$('#app').innerHTML=head()+'<section class="hero"><h1>Site introuvable</h1><p>Cette adresse n’existe pas ou n’est pas publiée.</p></section></div>'}
-function viewSite(x){var show=function(d){var bak=Object.assign({},S);Object.assign(S,{name:d.name,tpl:d.template},d.content||{});var h=site();Object.assign(S,bak);$('#app').innerHTML=h+'<p style="text-align:center;padding:16px;font-size:13px;color:var(--mut)">Créé avec Webora</p>'};
-if(!sb){if(x===S.sub)show({name:S.name,template:S.tpl,content:content()});else nf();return}
-sb.from('sites').select('name,template,content').eq('subdomain',x).eq('published',true).maybeSingle().then(function(r){if(r.data)show(r.data);else nf()})}
-function upd(){save();persist();var l=$('#live');if(l)l.innerHTML=site()}
-function go(r){location.hash='#/'+r}
-function auth(su){var e=$('#e').value.trim(),p=$('#p').value;
-if(!/^\S+@\S+\.\S+$/.test(e)){$('#er').textContent='Entrez une adresse e-mail valide.';return}
-if(p.length<6){$('#er').textContent='Le mot de passe doit contenir au moins 6 caractères.';return}
-if(!sb){S.logged=true;go('dashboard');return}
+
+var SITES=[
+  {n:'Kédassa Bazar',u:'kedassa.webora.com',s:'Publié',v:'1 240 visites'},
+  {n:'Neyoo',u:'neyoo.webora.com',s:'Publié',v:'860 visites'},
+  {n:'Brouillon salon',u:'-',s:'Brouillon',v:'-'}
+];
+
+var $=function(s){return document.querySelector(s)};
+
+function tpl(){
+  return TPL.filter(function(t){
+    return t.id===S.tpl
+  })[0]||TPL[0]
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"]/g,function(c){
+    return{
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;'
+    }[c]
+  })
+}
+
+function bind(k){
+  return 'oninput="S.'+k+'=this.value;upd()"'
+}
+
+
+// ============================================================
+// APERÇU DU SITE
+// ============================================================
+function site(){
+var t=tpl(),
+c=CATS[t.c],
+ac=S.color||t.ac,
+txt=(t.bg==='#0E0E10'||t.bg==='#16201B')?t.fg:t.fg;
+var btnFg=(t.bg==='#0E0E10')?'#0E0E10':'#fff';
+
+return '<div class="site" style="background:'+t.bg+';color:'+t.fg+';font-family:'+t.ff+'">'+
+'<nav><span>'+(S.logo?
+'<img src="'+S.logo+'" alt="" style="height:26px;vertical-align:middle;margin-right:8px">'
+:'')+
+esc(S.name)+'</span><span style="opacity:.6;font-weight:400">Accueil &nbsp; À propos &nbsp; Contact</span></nav>'+
+'<div class="h '+(t.l==='c'?'c':'')+'"><h1>'+esc(S.slogan)+'</h1><p>'+esc(S.desc)+'</p><span class="b" style="background:'+ac+';color:'+btnFg+'">'+c.b+'</span></div>'+
+(S.img?
+'<img src="'+S.img+'" alt="" style="width:100%;max-height:220px;object-fit:cover;display:block;margin-bottom:24px">'
+:'')+
+'<div class="it">'+
+c.it.map(function(_,n){
+  var x=getIt(n);
+  return '<div style="border-color:'+ac+'55"><b>'+
+    esc(x.t)+'</b><br><span style="opacity:.6;font-size:14px">'+
+    esc(x.d||'Description à personnaliser')+
+    '</span></div>'
+}).join('')+
+'</div>'+
+'<div class="ct" style="border-color:'+ac+'44">'+
+[
+  S.phone,
+  S.wa&&'WhatsApp '+S.wa,
+  S.email,
+  S.addr,
+  S.ig&&'Instagram '+S.ig,
+  S.fb&&'Facebook '+S.fb
+].filter(Boolean).map(function(x){
+  return esc(x)
+}).join(' &nbsp;|&nbsp; ')+
+'</div></div>'
+}
+
+
+// ============================================================
+// MINIATURE MODÈLE
+// ============================================================
+function thumb(t){
+return '<div class="thumb" style="background:'+t.bg+'">'+
+'<i style="background:'+t.fg+';width:60%"></i>'+
+'<i style="background:'+t.ac+';width:30%"></i>'+
+'<i style="background:'+t.fg+';width:80%;opacity:.3"></i>'+
+'</div>'
+}
+
+
+// ============================================================
+// SHELL
+// ============================================================
+function shell(on,body){
+var L=[
+['dashboard','Tableau de bord'],
+['categories','Nouveau site'],
+['editeur','Éditeur'],
+['apercu','Aperçu'],
+['publication','Publication'],
+['parametres','Paramètres'],
+['aide','Aide'],
+['contact','Contact']
+];
+
+return '<div class="shell"><aside class="side">'+
+'<a class="logo" href="#/">Webora</a>'+
+L.map(function(l){
+  return '<a href="#/'+l[0]+'" class="'+
+    (l[0]===on?'on':'')+'">'+l[1]+'</a>'
+}).join('')+
+'<a href="#/" onclick="logout()" style="margin-top:auto">Déconnexion</a>'+
+'</aside><main class="main">'+body+'</main></div>'
+}
+
+function head(){
+return '<div class="wrap"><div class="top">'+
+'<a class="logo" href="#/">Webora</a>'+
+'<nav>'+
+'<a href="#/aide" style="padding:10px 8px">Comment ça marche</a>'+
+'<a class="btn" href="#/connexion">Connexion</a>'+
+'<a class="btn p" href="#/inscription">Créer un compte</a>'+
+'</nav></div>'
+}
+
+
+// ============================================================
+// VUES
+// ============================================================
+var V={
+
+'':function(){
+return head()+
+'<section class="hero">'+
+'<h1>Votre site professionnel, en quelques minutes.</h1>'+
+'<p>Choisissez un modèle, personnalisez vos textes et vos couleurs, puis publiez. Aucun code nécessaire.</p>'+
+'<div class="row">'+
+'<a class="btn p lg" href="#/inscription">Commencer gratuitement</a>'+
+'<a class="btn lg" href="#/connexion">Se connecter</a>'+
+'</div>'+
+'</section>'+
+'<section class="steps">'+
+'<div><h3>Choisissez</h3><p>Boutique, restaurant ou salon de beauté.</p></div>'+
+'<div><h3>Sélectionnez</h3><p>Neuf modèles conçus pour votre activité.</p></div>'+
+'<div><h3>Personnalisez</h3><p>Textes, couleurs et coordonnées en direct.</p></div>'+
+'<div><h3>Publiez</h3><p>Une adresse en votre-nom.webora.com.</p></div>'+
+'</section>'+
+'<section style="padding:56px 0 96px;border-top:1px solid var(--line)">'+
+'<h2 style="font-size:32px;margin-bottom:24px">Des abonnements de 3 mois</h2>'+
+'<div class="plans">'+
+'<div class="stat"><h3>BASIQUE</h3><p class="sub" style="margin:6px 0 0">Pour un site simple</p><span class="tag ok">1er mois offert</span><ul><li>Abonnement de 3 mois</li><li>Un site simple</li><li>Sous-domaine webora.com</li><li>Modèles inclus</li><li>Branding Webora</li></ul></div>'+
+'<div class="stat"><h3>PRO</h3><p class="sub" style="margin:6px 0 0">Pour un site plus grand</p><ul><li>Abonnement de 3 mois</li><li>Modèles premium</li><li>Plus de pages</li><li>Sans branding</li><li>Statistiques</li></ul></div>'+
+'<div class="stat"><h3>PRO MAX</h3><p class="sub" style="margin:6px 0 0">Tout inclus, pour un usage professionnel</p><ul><li>Abonnement de 3 mois</li><li>Tout le plan Pro</li><li>Nom de domaine dédié</li><li>Plus de choix de modèles et d’options</li><li>Plusieurs sites</li><li>Catalogue et boutique en ligne</li><li>Statistiques avancées</li></ul></div>'+
+'</div>'+
+'<p class="note">Le premier mois du plan Basique est offert. Tarifs communiqués prochainement.</p>'+
+'</section>'+
+foot()+
+'</div>'
+},
+
+'inscription':function(){
+return '<div class="auth"><div class="card">'+
+'<h2>Créer un compte</h2>'+
+'<label>Nom complet</label><input id="n" autocomplete="name">'+
+'<label>Adresse e-mail</label><input id="e" type="email" autocomplete="email">'+
+'<label>Mot de passe</label><input id="p" type="password" autocomplete="new-password">'+
+'<p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p>'+
+'<button class="btn p" style="width:100%;margin-top:20px" onclick="auth(1)">Créer mon compte</button>'+
+'<p class="note">En créant un compte, vous acceptez les <a href="#/conditions">conditions d’utilisation</a> et la <a href="#/confidentialite">politique de confidentialité</a>.</p>'+
+'<p class="note">Déjà inscrit ? <a href="#/connexion">Se connecter</a></p>'+
+'</div></div>'
+},
+
+'connexion':function(){
+return '<div class="auth"><div class="card">'+
+'<h2>Connexion</h2>'+
+'<label>Adresse e-mail</label><input id="e" type="email" autocomplete="email">'+
+'<label>Mot de passe</label><input id="p" type="password" autocomplete="current-password">'+
+'<p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p>'+
+'<button class="btn p" style="width:100%;margin-top:20px" onclick="auth(0)">Se connecter</button>'+
+'<p class="note">Pas encore de compte ? <a href="#/inscription">Créer un compte</a></p>'+
+'</div></div>'
+},
+
+'dashboard':function(){
+return shell('dashboard',
+'<h1>Tableau de bord</h1>'+
+'<p class="sub">Vos sites et leur activité.</p>'+
+'<div class="stats">'+
+'<div class="stat"><b>'+sites().length+'</b><span>Sites</span></div>'+
+'<div class="stat"><b>'+sites().filter(function(x){return x.s==='Publié'}).length+'</b><span>Publiés</span></div>'+
+'<div class="stat"><b>2 100</b><span>Visites ce mois</span></div>'+
+'</div>'+
+'<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:16px">'+
+'<h3>Mes sites</h3><a class="btn p" href="#/categories">Nouveau site</a>'+
+'</div>'+
+'<div class="list">'+
+sites().map(function(s){
+return '<div class="li"'+
+(s.id?' onclick="openSite(\''+s.id+'\')" style="cursor:pointer"':'')+
+'><div><b>'+esc(s.n)+'</b><small>'+s.u+' &nbsp; '+s.v+'</small></div>'+
+'<span class="tag '+(s.s==='Publié'?'ok':'')+'">'+s.s+'</span></div>'
+}).join('')+
+(sites().length?'':'<div class="li"><span style="color:var(--mut)">Aucun site pour le moment. Cliquez sur « Nouveau site ».</span></div>')+
+'</div>'
+)
+},
+
+'categories':function(){
+return shell('categories',
+'<h1>Quel type de site ?</h1>'+
+'<p class="sub">Choisissez la catégorie qui correspond à votre activité.</p>'+
+'<div class="grid">'+
+Object.keys(CATS).map(function(k){
+return '<button class="opt" onclick="S.chg=0;S.cat=\''+k+'\';go(\'modeles\')">'+
+'<h3>'+CATS[k].n+'</h3><p>'+CATS[k].d+'</p></button>'
+}).join('')+
+'</div>'
+)
+},
+
+'modeles':function(){
+var q=S.q.toLowerCase();
+
+var list=TPL.filter(function(t){
+return (S.cat==='tous'||t.c===S.cat)&&
+(!q||(t.n+' '+CATS[t.c].n).toLowerCase().indexOf(q)>-1)&&
+(!S.f||(S.f==='p')===!!t.p)
+});
+
+return shell('categories',
+'<h1>Choisissez un modèle</h1>'+
+'<p class="sub">9 modèles disponibles. Vous pourrez tout modifier ensuite.</p>'+
+'<div class="tabs">'+
+'<button class="btn '+(S.cat==='tous'?'on':'')+'" onclick="S.cat=\'tous\';route()">Tous</button>'+
+Object.keys(CATS).map(function(k){
+return '<button class="btn '+(S.cat===k?'on':'')+'" onclick="S.cat=\''+k+'\';route()">'+CATS[k].n+'</button>'
+}).join('')+
+'</div>'+
+'<div class="row" style="margin-bottom:24px">'+
+'<input type="search" placeholder="Rechercher un modèle" value="'+esc(S.q)+'" onchange="S.q=this.value;route()" style="max-width:280px">'+
+'<select onchange="S.f=this.value;route()" style="max-width:180px">'+
+'<option value="">Tous</option>'+
+'<option value="g"'+(S.f==='g'?' selected':'')+'>Inclus</option>'+
+'<option value="p"'+(S.f==='p'?' selected':'')+'>Premium</option>'+
+'</select>'+
+'</div>'+
+'<div class="grid">'+
+list.map(function(t){
+return '<button class="opt" onclick="S.tpl=\''+t.id+'\';S.color=\'\';S.it=null;S.chg?changeTpl():newSite()">'+
+thumb(t)+
+'<h3>'+t.n+'</h3>'+
+'<p>'+CATS[t.c].n+' <span class="tag">'+(t.p?'Premium':'Inclus')+'</span></p>'+
+'</button>'
+}).join('')+
+'</div>'+
+(list.length?'':'<p class="sub">Aucun modèle ne correspond à cette recherche.</p>')
+)
+},
+
+'editeur':function(){
+var t=tpl();
+
+return shell('editeur',
+'<h1>Éditeur</h1>'+
+'<p class="sub">Modèle '+t.n+'. Les modifications apparaissent en direct.</p>'+
+'<div class="ed">'+
+'<div class="panel">'+
+'<label>Nom de l\'activité</label><input value="'+esc(S.name)+'" '+bind('name')+'>'+
+'<label>Slogan</label><input value="'+esc(S.slogan)+'" '+bind('slogan')+'>'+
+'<label>Description</label><textarea '+bind('desc')+'>'+esc(S.desc)+'</textarea>'+
+'<label>Couleur d\'accent</label><input type="color" value="'+(S.color||t.ac)+'" style="height:44px;padding:4px" oninput="S.color=this.value;upd()">'+
+itemsForm()+
+'<label>Téléphone</label><input value="'+esc(S.phone)+'" '+bind('phone')+'>'+
+'<label>E-mail</label><input value="'+esc(S.email)+'" '+bind('email')+'>'+
+'<label>WhatsApp</label><input value="'+esc(S.wa)+'" '+bind('wa')+'>'+
+'<label>Adresse</label><input value="'+esc(S.addr)+'" '+bind('addr')+'>'+
+'<label>Instagram</label><input value="'+esc(S.ig)+'" '+bind('ig')+'>'+
+'<label>Facebook</label><input value="'+esc(S.fb)+'" '+bind('fb')+'>'+
+'<label>Logo (2 Mo maximum)</label><input type="file" accept="image/*" onchange="up(\'logo\',this)">'+
+'<label>Image principale (2 Mo maximum)</label><input type="file" accept="image/*" onchange="up(\'img\',this)">'+
+'<div class="row" style="margin-top:20px">'+
+'<a class="btn" href="#/modeles" onclick="S.chg=1">Changer de modèle</a>'+
+'<a class="btn p" href="#/apercu">Aperçu</a>'+
+'</div>'+
+'</div>'+
+'<div class="frame"><div class="bar">Aperçu en direct</div><div id="live">'+site()+'</div></div>'+
+'</div>'
+)
+},
+
+'apercu':function(){
+return shell('apercu',
+'<div class="row" style="justify-content:space-between;align-items:center">'+
+'<div><h1>Aperçu</h1><p class="sub">Vérifiez le rendu avant de publier.</p></div>'+
+'<div class="row">'+
+'<button class="btn '+(S.dev==='d'?'on':'')+'" onclick="S.dev=\'d\';route()">Ordinateur</button>'+
+'<button class="btn '+(S.dev==='m'?'on':'')+'" onclick="S.dev=\'m\';route()">Mobile</button>'+
+'<a class="btn" href="#/editeur">Modifier</a>'+
+'<a class="btn p" href="#/publication">Continuer</a>'+
+'</div></div>'+
+'<div class="frame" style="max-width:'+(S.dev==='m'?'380px':'100%')+'">'+
+'<div class="bar">'+(esc(S.sub||'monsite')+'.webora.com')+'</div>'+
+site()+
+'</div>'
+)
+},
+
+'aide':function(){
+var st=[
+['1. Choisir','Sélectionnez votre type d’activité : boutique, restaurant ou salon de beauté.'],
+['2. Sélectionner','Chaque catégorie propose 3 modèles, inclus ou premium. Vous pouvez en changer à tout moment.'],
+['3. Personnaliser','Modifiez les textes, les couleurs, le logo, les images et les coordonnées. L’aperçu se met à jour en direct.'],
+['4. Publier','Choisissez une adresse en monsite.webora.com et votre site est en ligne.']
+];
+
+var fq=[
+['Créer un compte','Cliquez sur « Créer un compte », entrez votre adresse e-mail et un mot de passe de 6 caractères minimum.'],
+['Choisir ou changer de modèle','Dans « Nouveau site », choisissez une catégorie puis un modèle. Dans l’éditeur, le bouton « Changer de modèle » vous permet d’en essayer un autre.'],
+['Modifier les textes et les couleurs','Dans l’éditeur, remplissez les champs à gauche : nom, slogan, description, couleur d’accent. Le site à droite change immédiatement.'],
+['Ajouter un logo et une image','Dans l’éditeur, utilisez les champs « Logo » et « Image principale ». Le fichier doit être une image de 2 Mo maximum.'],
+['Vérifier le rendu sur mobile','Ouvrez « Aperçu » puis cliquez sur « Mobile ». Revenez à l’éditeur avec « Modifier » si quelque chose ne vous plaît pas.'],
+['Publier son site','Ouvrez « Publication », entrez votre adresse (3 caractères minimum, en lettres minuscules, chiffres ou tirets), puis cliquez sur « Publier ».'],
+['Avoir un nom de domaine dédié','Un nom de domaine dédié à votre site, par exemple www.monbusiness.com, est inclus dans le plan Pro Max.'],
+['Comment fonctionnent les abonnements','Chaque plan est un abonnement de 3 mois. Basique convient aux sites simples et son premier mois est offert. Pro convient aux sites plus grands. Pro Max donne accès à tout, avec un nom de domaine dédié.'],
+['Retrouver mes sites','Le tableau de bord liste tous vos sites avec leur adresse et leur statut : publié ou brouillon.']
+];
+
+var b='<div class="help" style="max-width:760px;padding:32px 0 96px">'+
+'<h1 style="font-size:clamp(32px,5vw,44px);margin-bottom:8px">Comment ça marche</h1>'+
+'<p class="sub">Créer un site avec Webora ne demande aucune compétence en code.</p>'+
+'<h3 style="margin-bottom:16px">Comment ça fonctionne</h3>'+
+'<div class="list">'+
+st.map(function(x){
+return '<div class="li"><div><b>'+x[0]+'</b><small>'+x[1]+'</small></div></div>'
+}).join('')+
+'</div>'+
+'<h3 style="margin:40px 0 8px">Comment faire</h3>'+
+fq.map(function(x){
+return '<details><summary>'+x[0]+'</summary><p>'+x[1]+'</p></details>'
+}).join('')+
+'<div class="row" style="margin-top:32px">'+
+'<a class="btn p lg" href="#/'+(S.logged?'categories':'inscription')+'">'+
+(S.logged?'Créer un site':'Commencer gratuitement')+
+'</a></div>'+
+'</div>';
+
+return S.logged?shell('aide',b):head()+b+foot()+'</div>'
+},
+
+'contact':function(){
+return pub('contact',
+'<div class="doc" style="max-width:760px;padding:32px 0 64px">'+
+'<h1>Contact</h1>'+
+'<p class="sub">Une question sur Webora ? Écrivez-nous, nous répondons sous deux jours ouvrables.</p>'+
+'<div class="list" style="margin-bottom:32px">'+
+'<div class="li"><b>E-mail</b><span>contact@webora.com</span></div>'+
+'<div class="li"><b>WhatsApp</b><span>+509 0000 0000</span></div>'+
+'<div class="li"><b>Développeur</b><span>Fawenbert Regis</span></div>'+
+'<div class="li"><b>Horaires</b><span>Lundi au vendredi, 8 h à 17 h</span></div>'+
+'</div>'+
+'<div id="cf" class="card" style="max-width:100%">'+
+'<label style="margin-top:0">Nom</label><input id="cn" autocomplete="name">'+
+'<label>Adresse e-mail</label><input id="ce" type="email" autocomplete="email">'+
+'<label>Message</label><textarea id="cm"></textarea>'+
+'<p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p>'+
+'<button class="btn p" style="margin-top:16px" onclick="sendMsg()">Envoyer le message</button>'+
+'</div></div>'
+)
+},
+
+'confidentialite':function(){
+return pub('',doc('Politique de confidentialité',[
+['Données que nous collectons','Votre nom, votre adresse e-mail, votre mot de passe (conservé sous forme chiffrée) et les contenus que vous ajoutez à votre site : textes, logo, images et coordonnées.'],
+['Pourquoi nous les utilisons','Pour créer et gérer votre compte, afficher et publier votre site, gérer votre abonnement et répondre à vos demandes.'],
+['Ce qui devient public','Les informations saisies dans votre site (nom de l’activité, téléphone, WhatsApp, adresse, réseaux sociaux) sont visibles par tous dès la publication. Ne publiez que ce que vous souhaitez rendre public.'],
+['Partage des données','Nous ne vendons pas vos données. Elles ne sont partagées qu’avec les prestataires nécessaires au service, comme l’hébergement et le paiement.'],
+['Sécurité','Chaque compte n’accède qu’à ses propres sites. Les mots de passe sont chiffrés et les échanges sont protégés.'],
+['Conservation','Vos données sont conservées tant que votre compte est actif. Vous pouvez demander leur suppression à tout moment.'],
+['Vos droits','Vous pouvez consulter, corriger ou supprimer vos données en nous écrivant depuis la page Contact.'],
+['Cookies','Webora utilise uniquement les éléments techniques nécessaires au fonctionnement du service.']
+]))
+},
+
+'conditions':function(){
+return pub('',doc('Conditions d’utilisation',[
+['Utilisation du service','Webora permet de créer et publier un site à partir de modèles. Vous fournissez des informations exactes à l’inscription et vous protégez votre mot de passe.'],
+['Abonnements','Les plans Basique, Pro et Pro Max sont des abonnements de 3 mois. Le premier mois du plan Basique est offert. Les tarifs vous sont communiqués avant toute souscription.'],
+['Votre contenu','Vous restez propriétaire des textes, logos et images que vous ajoutez, et vous confirmez avoir le droit de les utiliser.'],
+['Contenus interdits','Il est interdit de publier des contenus illégaux, trompeurs, haineux ou qui portent atteinte aux droits d’autrui. Un site qui ne respecte pas ces règles peut être suspendu.'],
+['Publication et domaines','Les sites sont publiés sur une adresse en webora.com. Le nom de domaine dédié est réservé au plan Pro Max.'],
+['Résiliation','Vous pouvez arrêter votre abonnement à tout moment. Il reste actif jusqu’à la fin de la période de 3 mois en cours.'],
+['Disponibilité','Nous faisons le maximum pour garder le service disponible, sans garantir l’absence d’interruption.'],
+['Modifications','Nous pouvons mettre à jour ces conditions. Les changements sont indiqués sur cette page.']
+]))
+},
+
+'parametres':function(){
+return shell('parametres',
+'<h1>Paramètres</h1>'+
+'<p class="sub">Profil et abonnement.</p>'+
+'<div class="card" style="max-width:520px">'+
+'<label style="margin-top:0">Nom complet</label><input placeholder="Votre nom">'+
+'<label>Adresse e-mail</label><input type="email" placeholder="vous@exemple.com">'+
+'<label>Plan actuel</label>'+
+'<div class="li" style="padding:12px 0;border:0"><b>BASIQUE</b><span class="tag ok">1er mois offert</span></div>'+
+'<div class="row" style="margin-top:16px">'+
+'<button class="btn p">Enregistrer</button>'+
+'<button class="btn">Passer au plan Pro</button>'+
+'</div></div>'
+)
+},
+
+'publication':function(){
+return shell('publication',
+'<h1>Publication</h1>'+
+'<p class="sub">Choisissez l\'adresse de votre site.</p>'+
+'<div class="pub">'+
+(S.pub?
+'<div class="ok-box">'+
+'<h3>Site publié</h3>'+
+'<p class="sub" style="margin:8px 0 16px">Votre site est en ligne à l\'adresse ci-dessous.</p>'+
+'<b>'+esc(S.sub)+'.webora.com</b>'+
+'<div class="row" style="margin-top:20px">'+
+'<a class="btn" href="#/s/'+esc(S.sub)+'">Voir le site</a>'+
+'<a class="btn p" href="#/dashboard" onclick="S.pub=false">Retour au tableau de bord</a>'+
+'</div></div>'
+:
+'<label>Adresse du site</label>'+
+'<div class="sd">'+
+'<input id="sd" value="'+esc(S.sub)+'" placeholder="monbusiness" oninput="S.sub=this.value.toLowerCase().replace(/[^a-z0-9-]/g,\'\')">'+
+'<span>.webora.com</span>'+
+'</div>'+
+'<p id="er" class="note" style="color:#C0392B;margin:8px 0 0"></p>'+
+'<div class="row" style="margin-top:24px">'+
+'<a class="btn" href="#/apercu">Retour</a>'+
+'<button class="btn p" onclick="publish()">Publier</button>'+
+'</div>'
+)+
+'</div>'
+)
+}
+};
+
+
+// ============================================================
+// FOOTER
+// ============================================================
+function foot(){
+return '<footer style="border-top:1px solid var(--line);padding:32px 0;display:flex;gap:16px 24px;flex-wrap:wrap;justify-content:space-between;color:var(--mut);font-size:14px">'+
+'<span>© 2026 Webora. Développé par Fawenbert Regis</span>'+
+'<span style="display:flex;gap:8px 24px;flex-wrap:wrap">'+
+'<a href="#/aide">Comment ça marche</a>'+
+'<a href="#/contact">Contact</a>'+
+'<a href="#/confidentialite">Confidentialité</a>'+
+'<a href="#/conditions">Conditions d’utilisation</a>'+
+'</span>'+
+'</footer>'
+}
+
+function pub(on,b){
+return S.logged?shell(on,b):head()+b+foot()+'</div>'
+}
+
+function doc(t,a){
+return '<div class="doc" style="max-width:760px;padding:32px 0 64px">'+
+'<h1>'+t+'</h1>'+
+'<p class="sub" style="margin-bottom:0">Dernière mise à jour : 27 septembre 2026</p>'+
+a.map(function(x){
+return '<h3>'+x[0]+'</h3><p>'+x[1]+'</p>'
+}).join('')+
+'</div>'
+}
+
+
+// ============================================================
+// CONTACT
+// ============================================================
+function sendMsg(){
+var n=$('#cn').value.trim(),
+e=$('#ce').value.trim(),
+m=$('#cm').value.trim();
+
+if(!n||!/^\S+@\S+\.\S+$/.test(e)||m.length<10){
+  $('#er').textContent='Renseignez votre nom, une adresse e-mail valide et un message d’au moins 10 caractères.';
+  return;
+}
+
+$('#cf').innerHTML='<h3>Message envoyé</h3><p class="sub" style="margin:8px 0 0">Merci '+esc(n)+'. Nous vous répondrons à '+esc(e)+'.</p>'
+}
+
+
+// ============================================================
+// UPLOAD WEBORA
+// ============================================================
+function up(k,el){
+var f=el.files[0];
+
+if(!f)return;
+
+if(f.size>2000000){
+  el.value='';
+  el.previousElementSibling.textContent='Fichier trop lourd : 2 Mo maximum';
+  return;
+}
+
+if(sb&&S.uid){
+
+  var pa=S.uid+'/'+(S.sid||'x')+'-'+k+'-'+Date.now();
+
+  sb.storage
+    .from('webora-media')
+    .upload(pa,f,{contentType:f.type})
+    .then(function(r){
+
+      if(r.error){
+        console.error(r.error);
+        el.previousElementSibling.textContent='Envoi impossible (image de 2 Mo maximum)';
+        return;
+      }
+
+      S[k]=sb
+        .storage
+        .from('webora-media')
+        .getPublicUrl(pa)
+        .data
+        .publicUrl;
+
+      upd();
+    });
+
+  return;
+}
+
+var r=new FileReader();
+
+r.onload=function(){
+  S[k]=r.result;
+  upd();
+};
+
+r.readAsDataURL(f);
+}
+
+
+// ============================================================
+// LOCAL STORAGE
+// ============================================================
+function save(){
+try{
+  localStorage.setItem('webora',JSON.stringify(S))
+}catch(e){}
+}
+
+
+// ============================================================
+// ITEMS
+// ============================================================
+function getIt(i){
+var c=CATS[tpl().c];
+
+return (S.it&&S.it[i])||{
+  t:c.it[i],
+  d:''
+}
+}
+
+function setIt(i,k,v){
+var c=CATS[tpl().c];
+
+S.it=S.it||c.it.map(function(x){
+  return{
+    t:x,
+    d:''
+  }
+});
+
+S.it[i][k]=v;
+
+upd();
+}
+
+function itemsForm(){
+var l={
+  boutique:'Produit',
+  restaurant:'Plat',
+  salon:'Service'
+}[tpl().c];
+
+return [0,1,2].map(function(n){
+var x=getIt(n);
+
+return '<label>'+l+' '+(n+1)+'</label>'+
+'<input value="'+esc(x.t)+'" oninput="setIt('+n+',\'t\',this.value)" placeholder="Nom">'+
+'<input style="margin-top:6px" value="'+esc(x.d)+'" oninput="setIt('+n+',\'d\',this.value)" placeholder="Description courte">'
+}).join('')
+}
+
+
+// ============================================================
+// SITES WEBORA
+// ============================================================
+function sites(){
+
+if(sb){
+  return (S.remote||[]).map(function(x){
+    return{
+      id:x.id,
+      n:x.name,
+      u:x.subdomain?x.subdomain+'.webora.com':'-',
+      s:x.published?'Publié':'Brouillon',
+      v:''
+    }
+  });
+}
+
+return (S.live?
+[
+  {
+    n:S.name,
+    u:S.sub+'.webora.com',
+    s:'Publié',
+    v:'0 visite'
+  }
+]
+:[]).concat(SITES);
+}
+
+
+// ============================================================
+// CHARGEMENT DES SITES WEBORA
+// ============================================================
+function loadSites(){
+
+return sb
+  .from('webora_sites')
+  .select('id,name,subdomain,published')
+  .order('updated_at',{ascending:false})
+  .then(function(r){
+
+    if(r.error){
+      console.error('Erreur chargement Webora:',r.error);
+      S.remote=[];
+      return;
+    }
+
+    S.remote=r.data||[];
+  });
+}
+
+
+// ============================================================
+// DÉCONNEXION
+// ============================================================
+function logout(){
+S.logged=false;
+S.uid=null;
+S.sid=null;
+S.remote=[];
+
+if(sb){
+  sb.auth.signOut();
+}
+}
+
+
+// ============================================================
+// CONTENU DU SITE
+// ============================================================
+function content(){
+var o={};
+
+[
+  'slogan',
+  'desc',
+  'color',
+  'phone',
+  'email',
+  'wa',
+  'addr',
+  'ig',
+  'fb',
+  'logo',
+  'img',
+  'it'
+].forEach(function(k){
+  o[k]=S[k];
+});
+
+return o;
+}
+
+
+// ============================================================
+// SAUVEGARDE WEBORA
+// ============================================================
+function persist(){
+
+if(!sb||!S.logged||!S.sid)return;
+
+clearTimeout(persist.t);
+
+persist.t=setTimeout(function(){
+
+  sb
+    .from('webora_sites')
+    .update({
+      name:S.name,
+      template:S.tpl,
+      category:tpl().c,
+      content:content()
+    })
+    .eq('id',S.sid)
+    .then(function(r){
+
+      if(r.error){
+        console.error('Erreur sauvegarde Webora:',r.error);
+      }
+
+    });
+
+},800);
+}
+
+
+// ============================================================
+// CRÉER UN NOUVEAU SITE WEBORA
+// ============================================================
+function newSite(){
+
+Object.assign(S,{
+  sid:null,
+  pub:false,
+  name:'Mon activité',
+  slogan:'Votre slogan ici',
+  desc:'Décrivez votre activité en quelques mots.',
+  logo:'',
+  img:'',
+  it:null,
+  sub:''
+});
+
+if(!sb){
+  go('editeur');
+  return;
+}
+
+sb
+  .from('webora_sites')
+  .insert({
+    name:S.name,
+    template:S.tpl,
+    category:tpl().c,
+    content:content()
+  })
+  .select('id')
+  .single()
+  .then(function(r){
+
+    if(r.error){
+      console.error('Erreur création site Webora:',r.error);
+      return;
+    }
+
+    if(r.data){
+      S.sid=r.data.id;
+    }
+
+    go('editeur');
+  });
+}
+
+
+// ============================================================
+// CHANGEMENT DE MODÈLE
+// ============================================================
+function changeTpl(){
+S.chg=0;
+persist();
+go('editeur');
+}
+
+
+// ============================================================
+// OUVRIR UN SITE WEBORA
+// ============================================================
+function openSite(id){
+
+sb
+  .from('webora_sites')
+  .select('*')
+  .eq('id',id)
+  .single()
+  .then(function(r){
+
+    if(r.error){
+      console.error('Erreur ouverture site Webora:',r.error);
+      return;
+    }
+
+    var d=r.data;
+
+    Object.assign(
+      S,
+      {
+        sid:d.id,
+        name:d.name,
+        tpl:d.template,
+        cat:d.category,
+        sub:d.subdomain||'',
+        pub:false,
+        it:null
+      },
+      d.content||{}
+    );
+
+    go('editeur');
+  });
+}
+
+
+// ============================================================
+// SITE INTROUVABLE
+// ============================================================
+function nf(){
+$('#app').innerHTML=
+head()+
+'<section class="hero">'+
+'<h1>Site introuvable</h1>'+
+'<p>Cette adresse n’existe pas ou n’est pas publiée.</p>'+
+'</section></div>'
+}
+
+
+// ============================================================
+// AFFICHAGE D'UN SITE PUBLIC WEBORA
+// ============================================================
+function viewSite(x){
+
+var show=function(d){
+
+  var bak=Object.assign({},S);
+
+  Object.assign(
+    S,
+    {
+      name:d.name,
+      tpl:d.template
+    },
+    d.content||{}
+  );
+
+  var h=site();
+
+  Object.assign(S,bak);
+
+  $('#app').innerHTML=
+    h+
+    '<p style="text-align:center;padding:16px;font-size:13px;color:var(--mut)">Créé avec Webora</p>';
+};
+
+if(!sb){
+
+  if(x===S.sub){
+    show({
+      name:S.name,
+      template:S.tpl,
+      content:content()
+    });
+  }else{
+    nf();
+  }
+
+  return;
+}
+
+sb
+  .from('webora_sites')
+  .select('name,template,content')
+  .eq('subdomain',x)
+  .eq('published',true)
+  .maybeSingle()
+  .then(function(r){
+
+    if(r.error){
+      console.error('Erreur site public Webora:',r.error);
+    }
+
+    if(r.data){
+      show(r.data);
+    }else{
+      nf();
+    }
+  });
+}
+
+
+// ============================================================
+// MISE À JOUR
+// ============================================================
+function upd(){
+save();
+persist();
+
+var l=$('#live');
+
+if(l){
+  l.innerHTML=site();
+}
+}
+
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function go(r){
+location.hash='#/'+r;
+}
+
+
+// ============================================================
+// AUTHENTIFICATION
+// ============================================================
+function auth(su){
+
+var e=$('#e').value.trim(),
+p=$('#p').value;
+
+if(!/^\S+@\S+\.\S+$/.test(e)){
+  $('#er').textContent='Entrez une adresse e-mail valide.';
+  return;
+}
+
+if(p.length<6){
+  $('#er').textContent='Le mot de passe doit contenir au moins 6 caractères.';
+  return;
+}
+
+if(!sb){
+  S.logged=true;
+  go('dashboard');
+  return;
+}
+
 var n=su?$('#n').value.trim():'';
-(su?sb.auth.signUp({email:e,password:p,options:{data:{full_name:n}}}):sb.auth.signInWithPassword({email:e,password:p})).then(function(r){
-if(r.error){$('#er').textContent=su?'Inscription impossible : '+r.error.message:'Adresse e-mail ou mot de passe incorrect.';return}
-if(!r.data.session){$('#er').textContent='Compte créé. Vérifiez votre e-mail pour le confirmer, puis connectez-vous.';return}
-S.logged=true;S.uid=r.data.session.user.id;loadSites().then(function(){go('dashboard')})})}
-function publish(){if(S.sub.length<3){$('#er').textContent='L\'adresse doit contenir au moins 3 caractères (lettres, chiffres, tirets).';return}
-if(!sb){S.pub=true;S.live=1;route();return}
-if(!S.sid){$('#er').textContent='Créez d’abord un site depuis « Nouveau site ».';return}
-sb.from('sites').update({subdomain:S.sub,published:true,name:S.name,content:content()}).eq('id',S.sid).then(function(r){if(r.error){$('#er').textContent=r.error.code==='23505'?'Cette adresse est déjà utilisée.':'Publication impossible, réessayez.';return}S.pub=true;loadSites().then(route)})}
-function anim(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-document.querySelectorAll('.stat b').forEach(function(b){var n=parseInt(b.textContent.replace(/\s/g,''),10),t0=null;if(isNaN(n))return;function f(t){t0=t0||t;var k=Math.min((t-t0)/700,1);b.textContent=Math.round(n*(1-Math.pow(1-k,3))).toLocaleString('fr-FR');if(k<1)requestAnimationFrame(f)}requestAnimationFrame(f)});
+
+(
+  su
+  ?sb.auth.signUp({
+      email:e,
+      password:p,
+      options:{
+        data:{
+          full_name:n
+        }
+      }
+    })
+  :sb.auth.signInWithPassword({
+      email:e,
+      password:p
+    })
+)
+.then(function(r){
+
+  if(r.error){
+    $('#er').textContent=
+      su
+      ?'Inscription impossible : '+r.error.message
+      :'Adresse e-mail ou mot de passe incorrect.';
+    return;
+  }
+
+  if(!r.data.session){
+    $('#er').textContent=
+      'Compte créé. Vérifiez votre e-mail pour le confirmer, puis connectez-vous.';
+    return;
+  }
+
+  S.logged=true;
+  S.uid=r.data.session.user.id;
+
+  loadSites().then(function(){
+    go('dashboard');
+  });
+});
+}
+
+
+// ============================================================
+// PUBLICATION WEBORA
+// ============================================================
+function publish(){
+
+if(S.sub.length<3){
+  $('#er').textContent=
+    'L\'adresse doit contenir au moins 3 caractères (lettres, chiffres, tirets).';
+  return;
+}
+
+if(!sb){
+  S.pub=true;
+  S.live=1;
+  route();
+  return;
+}
+
+if(!S.sid){
+  $('#er').textContent=
+    'Créez d’abord un site depuis « Nouveau site ».';
+  return;
+}
+
+sb
+  .from('webora_sites')
+  .update({
+    subdomain:S.sub,
+    published:true,
+    name:S.name,
+    content:content()
+  })
+  .eq('id',S.sid)
+  .then(function(r){
+
+    if(r.error){
+
+      console.error(r.error);
+
+      $('#er').textContent=
+        r.error.code==='23505'
+        ?'Cette adresse est déjà utilisée.'
+        :'Publication impossible, réessayez.';
+
+      return;
+    }
+
+    S.pub=true;
+
+    loadSites().then(route);
+  });
+}
+
+
+// ============================================================
+// ANIMATIONS
+// ============================================================
+function anim(){
+
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+
+document.querySelectorAll('.stat b').forEach(function(b){
+
+  var n=parseInt(
+    b.textContent.replace(/\s/g,''),
+    10
+  );
+
+  var t0=null;
+
+  if(isNaN(n))return;
+
+  function f(t){
+
+    t0=t0||t;
+
+    var k=Math.min((t-t0)/700,1);
+
+    b.textContent=
+      Math.round(
+        n*(1-Math.pow(1-k,3))
+      ).toLocaleString('fr-FR');
+
+    if(k<1){
+      requestAnimationFrame(f);
+    }
+  }
+
+  requestAnimationFrame(f);
+});
+
 if(!('IntersectionObserver' in window))return;
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
-document.querySelectorAll('.steps>div,.plans>.stat').forEach(function(el,i){el.classList.add('rv');el.style.transitionDelay=(i%4)*80+'ms';io.observe(el)})}
-var PROT=['dashboard','categories','modeles','editeur','apercu','publication'];
-function route(){var m=location.hash.match(/^#\/s\/([a-z0-9-]+)/);if(m){viewSite(m[1]);return}var r=(location.hash.replace(/^#\/?/,'')||'');if(!V[r])r='';
-if(PROT.indexOf(r)>-1&&!S.logged){go('connexion');return}
-$('#app').innerHTML=V[r]();window.scrollTo(0,0);anim();save()}
-try{Object.assign(S,JSON.parse(localStorage.getItem('webora')||'{}'))}catch(e){}
-window.addEventListener('hashchange',route);
-if(sb){sb.auth.getSession().then(function(r){var u=r.data.session&&r.data.session.user;S.logged=!!u;S.uid=u?u.id:null;return u?loadSites():0}).then(route)}else route();
+
+var io=new IntersectionObserver(
+  function(es){
+
+    es.forEach(function(e){
+
+      if(e.isIntersecting){
+
+        e.target.classList.add('in');
+
+        io.unobserve(e.target);
+      }
+
+    });
+
+  },
+  {
+    threshold:.15
+  }
+);
+
+document.querySelectorAll(
+  '.steps>div,.plans>.stat'
+).forEach(function(el,i){
+
+  el.classList.add('rv');
+
+  el.style.transitionDelay=
+    (i%4)*80+'ms';
+
+  io.observe(el);
+});
+}
+
+
+// ============================================================
+// ROUTES PROTÉGÉES
+// ============================================================
+var PROT=[
+  'dashboard',
+  'categories',
+  'modeles',
+  'editeur',
+  'apercu',
+  'publication'
+];
+
+
+// ============================================================
+// ROUTEUR
+// ============================================================
+function route(){
+
+var m=location.hash.match(
+  /^#\/s\/([a-z0-9-]+)/
+);
+
+if(m){
+  viewSite(m[1]);
+  return;
+}
+
+var r=
+  location.hash.replace(/^#\/?/,'')||'';
+
+if(!V[r])r='';
+
+if(PROT.indexOf(r)>-1&&!S.logged){
+  go('connexion');
+  return;
+}
+
+$('#app').innerHTML=V[r]();
+
+window.scrollTo(0,0);
+
+anim();
+
+save();
+}
+
+
+// ============================================================
+// CHARGEMENT LOCAL
+// ============================================================
+try{
+  Object.assign(
+    S,
+    JSON.parse(
+      localStorage.getItem('webora')||'{}'
+    )
+  );
+}catch(e){}
+
+
+// ============================================================
+// INITIALISATION
+// ============================================================
+window.addEventListener(
+  'hashchange',
+  route
+);
+
+if(sb){
+
+  sb.auth
+    .getSession()
+    .then(function(r){
+
+      var u=
+        r.data.session&&
+        r.data.session.user;
+
+      S.logged=!!u;
+      S.uid=u?u.id:null;
+
+      return u
+        ?loadSites()
+        :0;
+    })
+    .then(route);
+
+}else{
+
+  route();
+
+}
+
 </script>
 </body>
 </html>
+```
