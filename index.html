@@ -4,249 +4,3742 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Webora</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
-:root{--bg:#F7F8FA;--surf:#fff;--fg:#14181F;--mut:#5B6472;--line:#E3E6EB;--ac:#2A3BE8;--acf:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1218;--surf:#171B23;--fg:#ECEEF2;--mut:#98A1B0;--line:#262C38;--ac:#7B88FF;--acf:#0F1218}}
-:root[data-theme="dark"]{--bg:#0F1218;--surf:#171B23;--fg:#ECEEF2;--mut:#98A1B0;--line:#262C38;--ac:#7B88FF;--acf:#0F1218}
+:root{
+  --bg:#F7F8FA;
+  --surf:#fff;
+  --fg:#14181F;
+  --mut:#5B6472;
+  --line:#E3E6EB;
+  --ac:#2A3BE8;
+  --acf:#fff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px)
+}
+
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1218;
+    --surf:#171B23;
+    --fg:#ECEEF2;
+    --mut:#98A1B0;
+    --line:#262C38;
+    --ac:#7B88FF;
+    --acf:#0F1218
+  }
+}
+
+:root[data-theme="dark"]{
+  --bg:#0F1218;
+  --surf:#171B23;
+  --fg:#ECEEF2;
+  --mut:#98A1B0;
+  --line:#262C38;
+  --ac:#7B88FF;
+  --acf:#0F1218
+}
+
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
+
 *,*:before,*:after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.6 'Instrument Sans',system-ui,sans-serif}
-h1,h2,h3{font-family:'Bricolage Grotesque','Instrument Sans',sans-serif;font-weight:700;line-height:1.1;margin:0;letter-spacing:-.02em}
-a{color:inherit;text-decoration:none}
-button,input,textarea,select{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-.btn{display:inline-block;border:1px solid var(--line);background:var(--surf);padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:500}
-.btn.p{background:var(--ac);color:var(--acf);border-color:var(--ac)}
-.btn.lg{padding:14px 28px}
-.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:20px 0}
-.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:22px}
-.top nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.hero{padding:96px 0 72px;max-width:760px}
-.hero h1{font-size:clamp(40px,7vw,72px)}
-.hero p{font-size:19px;color:var(--mut);max-width:560px;margin:24px 0 32px}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding:56px 0;border-top:1px solid var(--line)}
-.steps h3{font-size:18px;margin-bottom:8px}.steps p{color:var(--mut);margin:0}
-.auth{min-height:100vh;display:grid;place-items:center;padding:24px}
-.card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:32px;width:100%;max-width:420px}
-.card h2{font-size:28px;margin-bottom:24px}
-label{display:block;font-size:14px;font-weight:500;margin:16px 0 6px}
-input,textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
-textarea{resize:vertical;min-height:84px}
-.note{color:var(--mut);font-size:14px;margin-top:20px}
-.note a{color:var(--ac);font-weight:500}
-.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
-.side{border-right:1px solid var(--line);padding:24px 16px;display:flex;flex-direction:column;gap:4px}
-.side a{padding:9px 12px;border-radius:8px;color:var(--mut)}
-.side a.on,.side a:hover{background:var(--surf);color:var(--fg)}
-.side .logo{padding:0 12px 20px}
-.main{padding:40px;min-width:0}
-.main h1{font-size:34px;margin-bottom:8px}
-.sub{color:var(--mut);margin:0 0 32px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
-.stat{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:20px}
-.stat b{display:block;font:700 30px 'Bricolage Grotesque',sans-serif}.stat span{color:var(--mut);font-size:14px}
-.list{border:1px solid var(--line);border-radius:12px;background:var(--surf)}
-.li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
-.li:last-child{border:0}.li small{color:var(--mut);display:block}
-.tag{font-size:13px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--mut)}
-.tag.ok{color:#1B7A4B;border-color:#1B7A4B}
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.plans ul{padding-left:18px;color:var(--mut);margin:12px 0 0}
-.doc h1{font-size:clamp(32px,5vw,44px);margin-bottom:8px}.doc h3{font-size:20px;margin:32px 0 8px}.doc p{color:var(--mut)}
-details{border-bottom:1px solid var(--line);padding:14px 0}summary{cursor:pointer;font-weight:500}details p{color:var(--mut);margin:10px 0 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
-.opt{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:24px;cursor:pointer;text-align:left;transition:border-color .15s}
-.opt:hover{border-color:var(--ac)}
-.opt h3{font-size:20px;margin-bottom:6px}.opt p{margin:0;color:var(--mut);font-size:15px}
-.thumb{height:150px;border-radius:8px;margin-bottom:14px;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;border:1px solid var(--line)}
-.thumb i{display:block;height:8px;border-radius:4px;opacity:.85}
-.tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
-.tabs .btn.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.ed{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
-.panel{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:8px 20px 20px}
-.frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surf);margin:0 auto;transition:max-width .2s}
-.bar{padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--mut)}
-.site{line-height:1.5}
-.site nav{display:flex;justify-content:space-between;padding:18px 28px;font-weight:600;font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:1px}
-.site .h{padding:56px 28px 48px}.site .h.c{text-align:center}
-.site h1,.site h2{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.3px}
-.site h1{font-size:clamp(28px,4vw,44px);margin-bottom:10px}
-.site .h p{margin:0 0 20px;opacity:.75}
-.site .b{display:inline-block;padding:12px 26px;border-radius:2px;font-weight:500;font-size:14px;letter-spacing:.3px}
-.site .it{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;padding:0 28px 32px}
-.site .it div{padding:18px;border-radius:8px;border:1px solid;opacity:.9}
-.site .ct{padding:24px 28px 36px;border-top:1px solid;font-size:14px}
-.pub{max-width:520px}
-.sd{display:flex;align-items:center;gap:0}
-.sd input{border-radius:8px 0 0 8px}.sd span{padding:11px 12px;border:1px solid var(--line);border-left:0;border-radius:0 8px 8px 0;color:var(--mut);white-space:nowrap}
-.ok-box{border:1px solid #1B7A4B;border-radius:12px;padding:24px}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-#app>*{animation:fade .25s ease}
-.hero h1,.hero p,.hero .row{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
-.hero h1{animation-delay:.05s}.hero p{animation-delay:.18s}.hero .row{animation-delay:.3s}
-.auth .card{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
-.rv{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}.rv.in{opacity:1;transform:none}
-.btn{transition:transform .15s,background .15s,border-color .15s}.btn:hover{transform:translateY(-1px);border-color:var(--ac)}.btn:active{transform:scale(.98)}
-.opt{transition:border-color .15s,transform .2s}.opt:hover{transform:translateY(-3px)}
-.side a{transition:background .15s,color .15s}
-details[open] p,.ok-box,#cf h3{animation:rise .35s ease both}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font:400 16px/1.6 'Instrument Sans',system-ui,sans-serif
+}
+
+h1,h2,h3{
+  font-family:'Bricolage Grotesque','Instrument Sans',sans-serif;
+  font-weight:700;
+  line-height:1.1;
+  margin:0;
+  letter-spacing:-.02em
+}
+
+a{
+  color:inherit;
+  text-decoration:none
+}
+
+button,input,textarea,select{
+  font:inherit;
+  color:inherit
+}
+
+:focus-visible{
+  outline:2px solid var(--ac);
+  outline-offset:2px
+}
+
+.wrap{
+  max-width:1080px;
+  margin:0 auto;
+  padding:0 24px
+}
+
+.btn{
+  display:inline-block;
+  border:1px solid var(--line);
+  background:var(--surf);
+  padding:10px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:500
+}
+
+.btn.p{
+  background:var(--ac);
+  color:var(--acf);
+  border-color:var(--ac)
+}
+
+.btn.lg{
+  padding:14px 28px
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  padding:20px 0
+}
+
+.logo{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-weight:700;
+  font-size:22px
+}
+
+.top nav{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap
+}
+
+.hero{
+  padding:96px 0 72px;
+  max-width:760px
+}
+
+.hero h1{
+  font-size:clamp(40px,7vw,72px)
+}
+
+.hero p{
+  font-size:19px;
+  color:var(--mut);
+  max-width:560px;
+  margin:24px 0 32px
+}
+
+.row{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:32px;
+  padding:56px 0;
+  border-top:1px solid var(--line)
+}
+
+.steps h3{
+  font-size:18px;
+  margin-bottom:8px
+}
+
+.steps p{
+  color:var(--mut);
+  margin:0
+}
+
+.auth{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:24px
+}
+
+.card{
+  background:var(--surf);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:32px;
+  width:100%;
+  max-width:420px
+}
+
+.card h2{
+  font-size:28px;
+  margin-bottom:24px
+}
+
+label{
+  display:block;
+  font-size:14px;
+  font-weight:500;
+  margin:16px 0 6px
+}
+
+input,textarea,select{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--bg)
+}
+
+textarea{
+  resize:vertical;
+  min-height:84px
+}
+
+.note{
+  color:var(--mut);
+  font-size:14px;
+  margin-top:20px
+}
+
+.note a{
+  color:var(--ac);
+  font-weight:500
+}
+
+.shell{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  min-height:100vh
+}
+
+.side{
+  border-right:1px solid var(--line);
+  padding:24px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:4px
+}
+
+.side a{
+  padding:9px 12px;
+  border-radius:8px;
+  color:var(--mut)
+}
+
+.side a.on,
+.side a:hover{
+  background:var(--surf);
+  color:var(--fg)
+}
+
+.side .logo{
+  padding:0 12px 20px
+}
+
+.main{
+  padding:40px;
+  min-width:0
+}
+
+.main h1{
+  font-size:34px;
+  margin-bottom:8px
+}
+
+.sub{
+  color:var(--mut);
+  margin:0 0 32px
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:40px
+}
+
+.stat{
+  background:var(--surf);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px
+}
+
+.stat b{
+  display:block;
+  font:700 30px 'Bricolage Grotesque',sans-serif
+}
+
+.stat span{
+  color:var(--mut);
+  font-size:14px
+}
+
+.list{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--surf)
+}
+
+.li{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:16px 20px;
+  border-bottom:1px solid var(--line)
+}
+
+.li:last-child{
+  border:0
+}
+
+.li small{
+  color:var(--mut);
+  display:block
+}
+
+.tag{
+  font-size:13px;
+  padding:3px 10px;
+  border-radius:99px;
+  border:1px solid var(--line);
+  color:var(--mut)
+}
+
+.tag.ok{
+  color:#1B7A4B;
+  border-color:#1B7A4B
+}
+
+.plans{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px
+}
+
+.plans ul{
+  padding-left:18px;
+  color:var(--mut);
+  margin:12px 0 0
+}
+
+.doc h1{
+  font-size:clamp(32px,5vw,44px);
+  margin-bottom:8px
+}
+
+.doc h3{
+  font-size:20px;
+  margin:32px 0 8px
+}
+
+.doc p{
+  color:var(--mut)
+}
+
+details{
+  border-bottom:1px solid var(--line);
+  padding:14px 0
+}
+
+summary{
+  cursor:pointer;
+  font-weight:500
+}
+
+details p{
+  color:var(--mut);
+  margin:10px 0 0
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px
+}
+
+.opt{
+  background:var(--surf);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:24px;
+  cursor:pointer;
+  text-align:left;
+  transition:border-color .15s,transform .2s
+}
+
+.opt:hover{
+  border-color:var(--ac);
+  transform:translateY(-3px)
+}
+
+.opt h3{
+  font-size:20px;
+  margin-bottom:6px
+}
+
+.opt p{
+  margin:0;
+  color:var(--mut);
+  font-size:15px
+}
+
+.cat-card{
+  min-height:230px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between
+}
+
+.cat-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px
+}
+
+.cat-number{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:var(--bg);
+  border:1px solid var(--line);
+  font-weight:600
+}
+
+.feature-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:18px
+}
+
+.feature-list span{
+  font-size:12px;
+  padding:4px 8px;
+  border-radius:6px;
+  border:1px solid var(--line);
+  color:var(--mut)
+}
+
+.thumb{
+  height:160px;
+  border-radius:8px;
+  margin-bottom:14px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  gap:6px;
+  border:1px solid var(--line);
+  overflow:hidden
+}
+
+.thumb i{
+  display:block;
+  height:8px;
+  border-radius:4px;
+  opacity:.85
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:24px;
+  flex-wrap:wrap
+}
+
+.tabs .btn.on{
+  background:var(--fg);
+  color:var(--bg);
+  border-color:var(--fg)
+}
+
+.ed{
+  display:grid;
+  grid-template-columns:360px 1fr;
+  gap:24px;
+  align-items:start
+}
+
+.panel{
+  background:var(--surf);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:8px 20px 20px
+}
+
+.section-title{
+  margin:26px 0 8px;
+  font-size:17px
+}
+
+.section-note{
+  color:var(--mut);
+  font-size:13px;
+  margin:0 0 12px
+}
+
+.item-box{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px;
+  margin-top:10px;
+  background:var(--bg)
+}
+
+.frame{
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--surf);
+  margin:0 auto;
+  transition:max-width .2s
+}
+
+.bar{
+  padding:10px 14px;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+  color:var(--mut)
+}
+
+.site{
+  line-height:1.5;
+  min-height:500px
+}
+
+.site a{
+  text-decoration:none
+}
+
+.site nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 28px;
+  font-weight:600
+}
+
+.site-nav-links{
+  display:flex;
+  gap:18px;
+  font-size:13px;
+  opacity:.65
+}
+
+.site .h{
+  padding:72px 28px 60px
+}
+
+.site .h.c{
+  text-align:center
+}
+
+.site h1,
+.site h2{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;
+  letter-spacing:.3px
+}
+
+.site h1{
+  font-size:clamp(32px,5vw,52px);
+  margin-bottom:12px
+}
+
+.site .h p{
+  margin:0 0 24px;
+  opacity:.75;
+  max-width:620px
+}
+
+.site .b{
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:4px;
+  font-weight:500;
+  font-size:14px;
+  letter-spacing:.3px
+}
+
+.site .it{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:14px;
+  padding:0 28px 36px
+}
+
+.site .it div{
+  padding:18px;
+  border-radius:8px;
+  border:1px solid;
+  opacity:.9
+}
+
+.site .ct{
+  padding:24px 28px 36px;
+  border-top:1px solid;
+  font-size:14px
+}
+
+.site .category-label{
+  font-size:12px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  opacity:.55;
+  margin-bottom:10px
+}
+
+.site .price{
+  font-weight:600;
+  margin-top:8px
+}
+
+.site .site-section-title{
+  padding:28px 28px 12px
+}
+
+.site .site-section-title h2{
+  font-size:30px;
+  margin-bottom:4px
+}
+
+.site .site-section-title p{
+  opacity:.6;
+  margin:0
+}
+
+.site.style-classic nav{
+  border-bottom:1px solid currentColor;
+  opacity:.95
+}
+
+.site.style-elegant nav{
+  padding:28px 34px
+}
+
+.site.style-elegant .h{
+  padding:95px 34px 80px
+}
+
+.site.style-elegant .b{
+  border-radius:99px
+}
+
+.site.style-commerce .h{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:30px;
+  align-items:center
+}
+
+.site.style-commerce .hero-media{
+  min-height:230px;
+  border-radius:14px;
+  overflow:hidden
+}
+
+.site.style-restaurant nav{
+  border-bottom:1px solid currentColor;
+}
+
+.site.style-restaurant .h{
+  text-align:center;
+  padding:80px 28px 55px
+}
+
+.site.style-restaurant .it div{
+  border-radius:0;
+  border-left:0;
+  border-right:0;
+  border-top:0
+}
+
+.site.style-modern nav{
+  padding:22px 28px;
+  border-bottom:1px solid currentColor
+}
+
+.site.style-modern .h{
+  background:rgba(0,0,0,.04)
+}
+
+.site.style-traditional .h{
+  text-align:center
+}
+
+.site.style-beauty .h{
+  text-align:center
+}
+
+.site.style-beauty .b{
+  border-radius:99px
+}
+
+.site.style-studio .h{
+  padding:55px 28px 45px
+}
+
+.site.style-premium .h{
+  text-align:center;
+  padding:90px 28px 65px
+}
+
+.site.style-corporate .h{
+  padding:55px 28px
+}
+
+.site.style-creative .h{
+  padding:90px 28px 50px
+}
+
+.site.style-business .h{
+  background:rgba(0,0,0,.04)
+}
+
+.site.style-hotel .h{
+  text-align:center;
+  padding:90px 28px 65px
+}
+
+.site.style-luxury .h{
+  text-align:center;
+  padding:105px 28px 70px
+}
+
+.site.style-stay .h{
+  padding:60px 28px
+}
+
+.site.style-portfolio .it{
+  grid-template-columns:repeat(2,1fr)
+}
+
+.site.style-gallery .it{
+  grid-template-columns:repeat(3,1fr)
+}
+
+.site.style-photo-studio .h{
+  padding:55px 28px
+}
+
+.site.style-cosmetics .h{
+  text-align:center
+}
+
+.site.style-beauty-shop .it div{
+  border-radius:14px
+}
+
+.site.style-beauty-premium .h{
+  text-align:center;
+  padding:90px 28px 60px
+}
+
+.pub{
+  max-width:520px
+}
+
+.sd{
+  display:flex;
+  align-items:center;
+  gap:0
+}
+
+.sd input{
+  border-radius:8px 0 0 8px
+}
+
+.sd span{
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-left:0;
+  border-radius:0 8px 8px 0;
+  color:var(--mut);
+  white-space:nowrap
+}
+
+.ok-box{
+  border:1px solid #1B7A4B;
+  border-radius:12px;
+  padding:24px
+}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:none}
+}
+
+@keyframes fade{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+#app>*{
+  animation:fade .25s ease
+}
+
+.hero h1,
+.hero p,
+.hero .row{
+  animation:rise .7s cubic-bezier(.2,.7,.2,1) both
+}
+
+.hero h1{animation-delay:.05s}
+.hero p{animation-delay:.18s}
+.hero .row{animation-delay:.3s}
+
+.auth .card{
+  animation:rise .5s cubic-bezier(.2,.7,.2,1) both
+}
+
+.btn{
+  transition:transform .15s,background .15s,border-color .15s
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:var(--ac)
+}
+
+.btn:active{
+  transform:scale(.98)
+}
+
+.side a{
+  transition:background .15s,color .15s
+}
+
+details[open] p,
+.ok-box,
+#cf h3{
+  animation:rise .35s ease both
+}
+
 @media(max-width:820px){
-.steps{grid-template-columns:1fr 1fr}.plans{grid-template-columns:1fr}.stats{grid-template-columns:1fr}
-.shell{grid-template-columns:1fr}.side{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:12px}
-.side .logo{padding:0 12px 0 0;align-self:center}.side a{white-space:nowrap}
-.main{padding:24px 16px}.ed{grid-template-columns:1fr}.site .it{grid-template-columns:1fr}.hero{padding:56px 0 40px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
+  .steps{
+    grid-template-columns:1fr 1fr
+  }
+
+  .plans{
+    grid-template-columns:1fr
+  }
+
+  .stats{
+    grid-template-columns:1fr
+  }
+
+  .shell{
+    grid-template-columns:1fr
+  }
+
+  .side{
+    flex-direction:row;
+    overflow-x:auto;
+    border-right:0;
+    border-bottom:1px solid var(--line);
+    padding:12px
+  }
+
+  .side .logo{
+    padding:0 12px 0 0;
+    align-self:center
+  }
+
+  .side a{
+    white-space:nowrap
+  }
+
+  .main{
+    padding:24px 16px
+  }
+
+  .ed{
+    grid-template-columns:1fr
+  }
+
+  .site .it{
+    grid-template-columns:1fr
+  }
+
+  .site.style-commerce .h{
+    grid-template-columns:1fr
+  }
+
+  .site.style-portfolio .it,
+  .site.style-gallery .it{
+    grid-template-columns:1fr
+  }
+
+  .hero{
+    padding:56px 0 40px
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{
+    transition:none!important;
+    animation:none!important
+  }
+}
 </style>
 </head>
+
 <body>
+
 <div id="app"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+
 <script>
-// Configuration Supabase : renseigner les deux valeurs (Project Settings > API). Vide = mode local.
-var SB_URL='https://pgiualcqiilgmjqdwlfq.supabase.co',SB_KEY='sb_publishable_KCYLHW-qWK7QVmLyNw5DlA_KRvSmNtB';
-var sb=(window.supabase&&SB_URL&&SB_KEY)?window.supabase.createClient(SB_URL,SB_KEY):null;
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+var SB_URL='https://pgiualcqiilgmjqdwlfq.supabase.co';
+var SB_KEY='sb_publishable_KCYLHW-qWK7QVmLyNw5DlA_KRvSmNtB';
+
+var sb=(window.supabase&&SB_URL&&SB_KEY)
+  ?window.supabase.createClient(SB_URL,SB_KEY)
+  :null;
+
+
+/* =========================================================
+   CATÉGORIES
+========================================================= */
+
 var CATS={
-boutique:{n:'Boutique',d:'Vendez vos produits en ligne',it:['Produit phare','Nouveautés','Promotions'],b:'Voir la collection'},
-restaurant:{n:'Restaurant',d:'Menu, horaires et réservations',it:['Entrées','Plats','Desserts'],b:'Voir le menu'},
-salon:{n:'Salon',d:'Services et prise de rendez-vous',it:['Coiffure','Soins','Beauté'],b:'Prendre rendez-vous'},
-agence:{n:'Agence',d:'Présentez vos services et vos réalisations',it:['Conseil','Création','Accompagnement'],b:'Demander un devis'},
-hotel:{n:'Hôtel',d:'Chambres, tarifs et réservations',it:['Chambre Standard','Chambre Confort','Suite'],b:'Réserver'},
-photographe:{n:'Photographe',d:'Portfolio et prestations',it:['Mariage','Portrait','Événement'],b:'Réserver une séance'},
-beaute:{n:'Beauté',d:'Cosmétiques, soins et parfums',it:['Soins du visage','Parfums','Maquillage'],b:'Commander'},
+
+  boutique:{
+    n:'Boutique',
+    d:'Créez une boutique en ligne pour présenter et vendre vos produits.',
+    features:['Produits','Prix','Catégories','Promotions','Commandes'],
+    item:'Produit',
+    items:['Produit phare','Nouveautés','Promotions'],
+    b:'Voir les produits'
+  },
+
+  restaurant:{
+    n:'Restaurant',
+    d:'Présentez votre menu, vos plats, vos horaires et vos informations.',
+    features:['Menu','Catégories de plats','Prix','Horaires','Réservations'],
+    item:'Plat',
+    items:['Entrées','Plats','Desserts'],
+    b:'Voir le menu'
+  },
+
+  salon:{
+    n:'Salon',
+    d:'Présentez vos services, tarifs et informations pour vos clients.',
+    features:['Services','Tarifs','Galerie','Horaires','Rendez-vous'],
+    item:'Service',
+    items:['Coiffure','Soins','Beauté'],
+    b:'Prendre rendez-vous'
+  },
+
+  agence:{
+    n:'Agence',
+    d:'Présentez vos services, vos projets et vos réalisations.',
+    features:['Services','Projets','Réalisations','Équipe','Contact'],
+    item:'Service',
+    items:['Conseil','Création','Accompagnement'],
+    b:'Demander un devis'
+  },
+
+  hotel:{
+    n:'Hôtel',
+    d:'Présentez vos chambres, tarifs, services et informations.',
+    features:['Chambres','Tarifs','Services','Galerie','Réservation'],
+    item:'Chambre',
+    items:['Chambre Standard','Chambre Confort','Suite'],
+    b:'Réserver'
+  },
+
+  photographe:{
+    n:'Photographe',
+    d:'Présentez votre portfolio, vos prestations et vos réalisations.',
+    features:['Portfolio','Galeries','Prestations','Tarifs','Contact'],
+    item:'Prestation',
+    items:['Mariage','Portrait','Événement'],
+    b:'Réserver une séance'
+  },
+
+  beaute:{
+    n:'Cosmétiques & Beauté',
+    d:'Présentez vos produits, soins, parfums et prestations beauté.',
+    features:['Produits','Soins','Prix','Galerie','Commandes'],
+    item:'Produit',
+    items:['Soins du visage','Parfums','Maquillage'],
+    b:'Commander'
+  }
+
 };
+
+
+/* =========================================================
+   MODÈLES
+========================================================= */
+
 var TPL=[
-{id:'atelier',c:'boutique',n:'Atelier',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'vitrine',c:'boutique',n:'Vitrine',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'minimal',p:1,c:'boutique',n:'Minimal',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'bistro',c:'restaurant',n:'Bistro',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'table',p:1,c:'restaurant',n:'Table',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'saveur',c:'restaurant',n:'Saveur',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'douceur',c:'salon',n:'Douceur',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'studio',c:'salon',n:'Studio',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'eclat',p:1,c:'salon',n:'Éclat',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'signature',c:'agence',n:'Signature',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'bureau',p:1,c:'agence',n:'Bureau',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'sejour',c:'hotel',n:'Séjour',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'rivage',p:1,c:'hotel',n:'Rivage',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'expo',c:'photographe',n:'Expo',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'cadre',p:1,c:'photographe',n:'Cadre',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'},
-{id:'rituel',c:'beaute',n:'Rituel',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'c'},
-{id:'flacon',p:1,c:'beaute',n:'Flacon',bg:'#F7F4EE',fg:'#262322',ac:'#1F6F64',ff:'Jost,sans-serif',l:'s'}];
+
+  /* BOUTIQUE */
+  {
+    id:'boutique-classique',
+    c:'boutique',
+    n:'Classique',
+    style:'classic',
+    bg:'#F7F4EE',
+    fg:'#262322',
+    ac:'#1F6F64',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'boutique-elegance',
+    c:'boutique',
+    n:'Élégance',
+    style:'elegant',
+    bg:'#FBF8F2',
+    fg:'#2B2418',
+    ac:'#B08D3F',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'boutique-commerce',
+    c:'boutique',
+    n:'Commerce',
+    style:'commerce',
+    bg:'#F4F6F8',
+    fg:'#171B20',
+    ac:'#263E80',
+    ff:'Jost,sans-serif'
+  },
+
+
+  /* RESTAURANT */
+  {
+    id:'restaurant-gastronomie',
+    c:'restaurant',
+    n:'Gastronomie',
+    style:'restaurant',
+    bg:'#191511',
+    fg:'#F5EFE5',
+    ac:'#B08D3F',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'restaurant-moderne',
+    c:'restaurant',
+    n:'Moderne',
+    style:'modern',
+    bg:'#F4F4F1',
+    fg:'#20221F',
+    ac:'#4C6952',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'restaurant-tradition',
+    c:'restaurant',
+    n:'Tradition',
+    style:'traditional',
+    bg:'#FBF4EA',
+    fg:'#3A241B',
+    ac:'#B45C32',
+    ff:'Jost,sans-serif'
+  },
+
+
+  /* SALON */
+  {
+    id:'salon-elegance',
+    c:'salon',
+    n:'Élégance',
+    style:'beauty',
+    bg:'#F8F2F3',
+    fg:'#34262B',
+    ac:'#A65D72',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'salon-studio',
+    c:'salon',
+    n:'Studio',
+    style:'studio',
+    bg:'#F1F3F2',
+    fg:'#202523',
+    ac:'#527267',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'salon-premium',
+    c:'salon',
+    n:'Premium',
+    style:'premium',
+    bg:'#171719',
+    fg:'#F4F0E9',
+    ac:'#C6A86A',
+    ff:'Jost,sans-serif'
+  },
+
+
+  /* AGENCE */
+  {
+    id:'agence-corporate',
+    c:'agence',
+    n:'Corporate',
+    style:'corporate',
+    bg:'#F4F6F8',
+    fg:'#17202A',
+    ac:'#2D5B96',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'agence-creative',
+    c:'agence',
+    n:'Créatif',
+    style:'creative',
+    bg:'#F6F1FA',
+    fg:'#281E30',
+    ac:'#7B3FA0',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'agence-business',
+    c:'agence',
+    n:'Business',
+    style:'business',
+    bg:'#EEF2F5',
+    fg:'#17212A',
+    ac:'#1C617A',
+    ff:'Jost,sans-serif'
+  },
+
+
+  /* HOTEL */
+  {
+    id:'hotel-evasion',
+    c:'hotel',
+    n:'Évasion',
+    style:'hotel',
+    bg:'#EEF3F1',
+    fg:'#17221E',
+    ac:'#527568',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'hotel-prestige',
+    c:'hotel',
+    n:'Prestige',
+    style:'luxury',
+    bg:'#171513',
+    fg:'#F4EFE6',
+    ac:'#B08D3F',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'hotel-sejour',
+    c:'hotel',
+    n:'Séjour',
+    style:'stay',
+    bg:'#F7F3ED',
+    fg:'#31271F',
+    ac:'#9B6746',
+    ff:'Jost,sans-serif'
+  },
+
+
+  /* PHOTOGRAPHE */
+  {
+    id:'photo-portfolio',
+    c:'photographe',
+    n:'Portfolio',
+    style:'portfolio',
+    bg:'#111214',
+    fg:'#F1F1F1',
+    ac:'#D6D6D6',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'photo-galerie',
+    c:'photographe',
+    n:'Galerie',
+    style:'gallery',
+    bg:'#F5F5F3',
+    fg:'#20211F',
+    ac:'#333333',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'photo-studio',
+    c:'photographe',
+    n:'Studio',
+    style:'photo-studio',
+    bg:'#ECE9E3',
+    fg:'#27231E',
+    ac:'#8B6349',
+    ff:'Jost,sans-serif'
+  },
+
+
+  /* BEAUTÉ */
+  {
+    id:'beaute-cosmetiques',
+    c:'beaute',
+    n:'Cosmétiques',
+    style:'cosmetics',
+    bg:'#F8F2EE',
+    fg:'#33241F',
+    ac:'#A8654D',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'beaute-shop',
+    c:'beaute',
+    n:'Beauté',
+    style:'beauty-shop',
+    bg:'#F4F0F4',
+    fg:'#302633',
+    ac:'#8C5B82',
+    ff:'Jost,sans-serif'
+  },
+
+  {
+    id:'beaute-premium',
+    c:'beaute',
+    n:'Premium',
+    style:'beauty-premium',
+    bg:'#171517',
+    fg:'#F4EEE7',
+    ac:'#C5A46D',
+    ff:'Jost,sans-serif'
+  }
+
+];
+
+
+/* =========================================================
+   PALETTES
+========================================================= */
+
 var PAL=[
-{n:'Modèle',bg:'',fg:'',ac:''},
-{n:'Ivoire & or',bg:'#FBF8F2',fg:'#2B2418',ac:'#B08D3F'},
-{n:'Nuit',bg:'#0D0F14',fg:'#F1F2F5',ac:'#6C7BFF'},
-{n:'Sauge',bg:'#F1F5EF',fg:'#1E2A20',ac:'#4C7A52'},
-{n:'Terracotta',bg:'#FBF1EA',fg:'#3A241B',ac:'#C9622D'},
-{n:'Améthyste',bg:'#F6F2FB',fg:'#251A33',ac:'#7B3FA0'},
-{n:'Océan',bg:'#EFF6F8',fg:'#132229',ac:'#1E7C93'},
-{n:'Corail',bg:'#FFF4F1',fg:'#2E1712',ac:'#E4573D'}];
-var S={cat:'boutique',tpl:'atelier',name:'Maison Delva',slogan:'Des produits choisis avec soin',desc:'Nous accompagnons nos clients depuis 2019.',color:'',pal:0,phone:'+509 0000 0000',email:'contact@exemple.com',wa:'',wam:'Bonjour, je viens de voir votre site',hours:'Lundi au samedi, 9 h à 17 h',addr:'',ig:'',fb:'',logo:'',img:'',q:'',f:'',sub:'',logged:false,pub:false,dev:'d'};
-var SITES=[{n:'Kédassa Bazar',u:'kedassa.webora.com',s:'Publié',v:'1 240 visites'},{n:'Neyoo',u:'neyoo.webora.com',s:'Publié',v:'860 visites'},{n:'Brouillon salon',u:'-',s:'Brouillon',v:'-'}];
-var $=function(s){return document.querySelector(s)};
-function tpl(){return TPL.filter(function(t){return t.id===S.tpl})[0]||TPL[0]}
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function bind(k){return 'oninput="S.'+k+'=this.value;upd()"'}
-function waLink(){if(!S.wa)return '';var d=S.wa.replace(/[^0-9]/g,'');return 'https://wa.me/'+d+'?text='+encodeURIComponent(S.wam||'Bonjour')}
-function pal(){var p=PAL[S.pal||0];return (p&&p.bg)?p:null}
-function site(){
-var t=tpl(),c=CATS[t.c],p=pal(),bg=(p&&p.bg)||t.bg,fg=(p&&p.fg)||t.fg,ac=S.color||(p&&p.ac)||t.ac;
-var dark=/^#(0|1)/.test(bg)||['#0E0E10','#16201B','#101317','#0D2230','#111111','#0D0F14'].indexOf(t.bg)>-1;
-var btnFg=dark?bg:'#fff';
-var link=waLink();
-var cta=link?'<a class="b" href="'+link+'" target="_blank" rel="noopener" style="background:'+ac+';color:'+btnFg+'">'+c.b+' sur WhatsApp</a>':'<span class="b" style="background:'+ac+';color:'+btnFg+'">'+c.b+'</span>';
-return '<div class="site" style="background:'+bg+';color:'+fg+';font-family:'+t.ff+';position:relative">'+
-'<nav><span>'+(S.logo?'<img src="'+S.logo+'" alt="" style="height:26px;vertical-align:middle;margin-right:8px">':'')+esc(S.name)+'</span><span style="opacity:.6;font-weight:400">Accueil &nbsp; À propos &nbsp; Contact</span></nav>'+
-'<div class="h '+(t.l==='c'?'c':'')+'"><h1>'+esc(S.slogan)+'</h1><p>'+esc(S.desc)+'</p>'+cta+'</div>'+
-(S.img?'<img src="'+S.img+'" alt="" style="width:100%;max-height:220px;object-fit:cover;display:block;margin-bottom:24px">':'')+'<div class="it">'+ensureItems().map(function(x){return '<div style="border-color:'+ac+'55">'+(x.img?'<img src="'+x.img+'" alt="" style="width:100%;height:110px;object-fit:cover;border-radius:6px;margin-bottom:10px">':'')+'<b>'+esc(x.t)+'</b><br><span style="opacity:.6;font-size:14px">'+esc(x.d||'Description à personnaliser')+'</span></div>'}).join('')+'</div>'+
-'<div class="ct" style="border-color:'+ac+'44">'+[S.phone,S.hours,S.email,S.addr,S.ig&&'Instagram '+S.ig,S.fb&&'Facebook '+S.fb].filter(Boolean).map(function(x){return esc(x)}).join(' &nbsp;|&nbsp; ')+'</div>'+
-(link?'<a href="'+link+'" target="_blank" rel="noopener" style="position:absolute;bottom:16px;right:16px;background:#25D366;color:#fff;border-radius:99px;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.2)">WhatsApp</a>':'')+
-'</div>'}
-function thumb(t){return '<div class="thumb" style="background:'+t.bg+'"><i style="background:'+t.fg+';width:60%"></i><i style="background:'+t.ac+';width:30%"></i><i style="background:'+t.fg+';width:80%;opacity:.3"></i></div>'}
-function shell(on,body){
-var L=[['dashboard','Tableau de bord'],['categories','Nouveau site'],['editeur','Éditeur'],['apercu','Aperçu'],['publication','Publication'],['parametres','Paramètres'],['aide','Aide'],['contact','Contact']];
-return '<div class="shell"><aside class="side"><a class="logo" href="#/">Webora</a>'+L.map(function(l){return '<a href="#/'+l[0]+'" class="'+(l[0]===on?'on':'')+'">'+l[1]+'</a>'}).join('')+'<a href="#/" onclick="logout()" style="margin-top:auto">Déconnexion</a></aside><main class="main">'+body+'</main></div>'}
-function head(){return '<div class="wrap"><div class="top"><a class="logo" href="#/">Webora</a><nav><a href="#/aide" style="padding:10px 8px">Comment ça marche</a><a class="btn" href="#/connexion">Connexion</a><a class="btn p" href="#/inscription">Créer un compte</a></nav></div>'}
-var V={
-'':function(){return head()+'<section class="hero"><h1>Votre site professionnel, en quelques minutes.</h1><p>Choisissez un modèle, personnalisez vos textes et vos couleurs, puis publiez. Aucun code nécessaire.</p><div class="row"><a class="btn p lg" href="#/inscription">Commencer gratuitement</a><a class="btn lg" href="#/connexion">Se connecter</a></div></section>'+
-'<section class="steps"><div><h3>Choisissez</h3><p>Boutique, restaurant, salon, agence, hôtel, photographe ou beauté.</p></div><div><h3>Sélectionnez</h3><p>Dix-sept modèles, dans sept catégories, avec un style uniforme et soigné.</p></div><div><h3>Personnalisez</h3><p>Textes, couleurs et coordonnées en direct.</p></div><div><h3>Publiez</h3><p>Une adresse en votre-nom.webora.com.</p></div></section><section style="padding:56px 0 96px;border-top:1px solid var(--line)"><h2 style="font-size:32px;margin-bottom:24px">Des abonnements de 3 mois</h2><div class="plans"><div class="stat"><h3>BASIQUE</h3><p class="sub" style="margin:6px 0 0">Pour un site simple</p><span class="tag ok">1er mois offert</span><ul><li>Abonnement de 3 mois</li><li>Un site simple</li><li>Sous-domaine webora.com</li><li>Modèles inclus</li><li>Branding Webora</li></ul></div><div class="stat"><h3>PRO</h3><p class="sub" style="margin:6px 0 0">Pour un site plus grand</p><ul><li>Abonnement de 3 mois</li><li>Modèles premium</li><li>Plus de pages</li><li>Sans branding</li><li>Statistiques</li></ul></div><div class="stat"><h3>PRO MAX</h3><p class="sub" style="margin:6px 0 0">Tout inclus, pour un usage professionnel</p><ul><li>Abonnement de 3 mois</li><li>Tout le plan Pro</li><li>Nom de domaine dédié</li><li>Plus de choix de modèles et d’options</li><li>Plusieurs sites</li><li>Catalogue et boutique en ligne</li><li>Statistiques avancées</li></ul></div></div><p class="note">Le premier mois du plan Basique est offert. Tarifs communiqués prochainement.</p></section>'+foot()+'</div>'},
-'inscription':function(){return '<div class="auth"><div class="card"><h2>Créer un compte</h2><label>Nom complet</label><input id="n" autocomplete="name"><label>Adresse e-mail</label><input id="e" type="email" autocomplete="email"><label>Mot de passe</label><input id="p" type="password" autocomplete="new-password"><p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p><button class="btn p" style="width:100%;margin-top:20px" onclick="auth(1)">Créer mon compte</button><p class="note">En créant un compte, vous acceptez les <a href="#/conditions">conditions d’utilisation</a> et la <a href="#/confidentialite">politique de confidentialité</a>.</p><p class="note">Déjà inscrit ? <a href="#/connexion">Se connecter</a></p></div></div>'},
-'connexion':function(){return '<div class="auth"><div class="card"><h2>Connexion</h2><label>Adresse e-mail</label><input id="e" type="email" autocomplete="email"><label>Mot de passe</label><input id="p" type="password" autocomplete="current-password"><p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p><button class="btn p" style="width:100%;margin-top:20px" onclick="auth(0)">Se connecter</button><p class="note">Pas encore de compte ? <a href="#/inscription">Créer un compte</a></p></div></div>'},
-'dashboard':function(){return shell('dashboard','<h1>Tableau de bord</h1><p class="sub">Vos sites et leur activité.</p><div class="stats"><div class="stat"><b>'+sites().length+'</b><span>Sites</span></div><div class="stat"><b>'+sites().filter(function(x){return x.s==='Publié'}).length+'</b><span>Publiés</span></div><div class="stat"><b>2 100</b><span>Visites ce mois</span></div></div><div class="row" style="justify-content:space-between;align-items:center;margin-bottom:16px"><h3>Mes sites</h3><a class="btn p" href="#/categories">Nouveau site</a></div><div class="list">'+sites().map(function(s){return '<div class="li"'+(s.id?' onclick="openSite(\''+s.id+'\')" style="cursor:pointer"':'')+'><div><b>'+esc(s.n)+'</b><small>'+s.u+' &nbsp; '+s.v+'</small></div><span class="tag '+(s.s==='Publié'?'ok':'')+'">'+s.s+'</span></div>'}).join('')+(sites().length?'':'<div class="li"><span style="color:var(--mut)">Aucun site pour le moment. Cliquez sur « Nouveau site ».</span></div>')+'</div>')},
-'categories':function(){return shell('categories','<h1>Quel type de site ?</h1><p class="sub">Choisissez la catégorie qui correspond à votre activité.</p><div class="grid">'+Object.keys(CATS).map(function(k){return '<button class="opt" onclick="S.chg=0;S.cat=\''+k+'\';go(\'modeles\')"><h3>'+CATS[k].n+'</h3><p>'+CATS[k].d+'</p></button>'}).join('')+'</div>')},
-'modeles':function(){var q=S.q.toLowerCase(),list=TPL.filter(function(t){return (S.cat==='tous'||t.c===S.cat)&&(!q||(t.n+' '+CATS[t.c].n).toLowerCase().indexOf(q)>-1)&&(!S.f||(S.f==='p')===!!t.p)});
-return shell('categories','<h1>Choisissez un modèle</h1><p class="sub">17 modèles disponibles, tous avec la même identité visuelle élégante, personnalisable si besoin.</p><div class="tabs"><button class="btn '+(S.cat==='tous'?'on':'')+'" onclick="S.cat=\'tous\';route()">Tous</button>'+Object.keys(CATS).map(function(k){return '<button class="btn '+(S.cat===k?'on':'')+'" onclick="S.cat=\''+k+'\';route()">'+CATS[k].n+'</button>'}).join('')+'</div><div class="row" style="margin-bottom:24px"><input type="search" placeholder="Rechercher un modèle" value="'+esc(S.q)+'" onchange="S.q=this.value;route()" style="max-width:280px"><select onchange="S.f=this.value;route()" style="max-width:180px"><option value="">Tous</option><option value="g"'+(S.f==='g'?' selected':'')+'>Inclus</option><option value="p"'+(S.f==='p'?' selected':'')+'>Premium</option></select></div><div class="grid">'+list.map(function(t){return '<button class="opt" onclick="S.tpl=\''+t.id+'\';S.color=\'\';S.it=null;S.chg?changeTpl():newSite()">'+thumb(t)+'<h3>'+t.n+'</h3><p>'+CATS[t.c].n+' <span class="tag">'+(t.p?'Premium':'Inclus')+'</span></p></button>'}).join('')+'</div>'+(list.length?'':'<p class="sub">Aucun modèle ne correspond à cette recherche.</p>'))},
-'editeur':function(){var t=tpl();return shell('editeur','<h1>Éditeur</h1><p class="sub">Modèle '+t.n+'. Les modifications apparaissent en direct.</p><div class="ed"><div class="panel"><label>Nom de l\'activité</label><input value="'+esc(S.name)+'" '+bind('name')+'><label>Slogan</label><input value="'+esc(S.slogan)+'" '+bind('slogan')+'><label>Description</label><textarea '+bind('desc')+'>'+esc(S.desc)+'</textarea><label>Palette de couleurs</label><div class="pal">'+PAL.map(function(x,i){return '<button type="button" title="'+x.n+'" class="sw'+(S.pal===i?' on':'')+'" style="background:'+(x.bg||'linear-gradient(135deg,#eee,#ccc)')+'" onclick="S.pal='+i+';upd()"></button>'}).join('')+'</div><label>Couleur d\'accent (facultatif, remplace la palette)</label><input type="color" value="'+(S.color||(pal()&&pal().ac)||t.ac)+'" style="height:44px;padding:4px" oninput="S.color=this.value;upd()">'+(S.color?'<button type="button" class="btn" style="margin-top:8px" onclick="S.color=\'\';upd()">Revenir à la palette</button>':'')+itemsForm()+'<label>Horaires</label><input value="'+esc(S.hours)+'" '+bind('hours')+'><label>Téléphone</label><input value="'+esc(S.phone)+'" '+bind('phone')+'><label>E-mail</label><input value="'+esc(S.email)+'" '+bind('email')+'><label>Numéro WhatsApp (avec indicatif, ex. 50900000000)</label><input value="'+esc(S.wa)+'" '+bind('wa')+'><label>Message WhatsApp prérempli</label><input value="'+esc(S.wam)+'" '+bind('wam')+'><label>Adresse</label><input value="'+esc(S.addr)+'" '+bind('addr')+'><label>Instagram</label><input value="'+esc(S.ig)+'" '+bind('ig')+'><label>Facebook</label><input value="'+esc(S.fb)+'" '+bind('fb')+'><label>Logo (2 Mo maximum)</label><input type="file" accept="image/*" onchange="up(\'logo\',this)"><label>Image principale (2 Mo maximum)</label><input type="file" accept="image/*" onchange="up(\'img\',this)"><div class="row" style="margin-top:20px"><a class="btn" href="#/modeles" onclick="S.chg=1">Changer de modèle</a><a class="btn p" href="#/apercu">Aperçu</a></div></div><div class="frame"><div class="bar">Aperçu en direct</div><div id="live">'+site()+'</div></div></div>')},
-'apercu':function(){return shell('apercu','<div class="row" style="justify-content:space-between;align-items:center"><div><h1>Aperçu</h1><p class="sub">Vérifiez le rendu avant de publier.</p></div><div class="row"><button class="btn '+(S.dev==='d'?'on':'')+'" onclick="S.dev=\'d\';route()">Ordinateur</button><button class="btn '+(S.dev==='m'?'on':'')+'" onclick="S.dev=\'m\';route()">Mobile</button><a class="btn" href="#/editeur">Modifier</a><a class="btn p" href="#/publication">Continuer</a></div></div><div class="frame" style="max-width:'+(S.dev==='m'?'380px':'100%')+'"><div class="bar">'+(esc(S.sub||'monsite')+'.webora.com')+'</div>'+site()+'</div>')},
-'aide':function(){var st=[['1. Choisir','Sélectionnez votre type d’activité : boutique, restaurant, salon, agence, hôtel, photographe ou beauté.'],['2. Sélectionner','Chaque catégorie propose plusieurs modèles, inclus ou premium, avec la même identité visuelle élégante par défaut, personnalisable si besoin. Vous pouvez en changer à tout moment.'],['3. Personnaliser','Modifiez les textes, les couleurs, le logo, les images et les coordonnées. L’aperçu se met à jour en direct.'],['4. Publier','Choisissez une adresse en monsite.webora.com et votre site est en ligne.']];
-var fq=[['Créer un compte','Cliquez sur « Créer un compte », entrez votre adresse e-mail et un mot de passe de 6 caractères minimum.'],['Choisir ou changer de modèle','Dans « Nouveau site », choisissez une catégorie puis un modèle. Dans l’éditeur, le bouton « Changer de modèle » vous permet d’en essayer un autre.'],['Modifier les textes et les couleurs','Dans l’éditeur, remplissez les champs à gauche : nom, slogan, description, couleur d’accent. Le site à droite change immédiatement.'],['Ajouter un logo et une image','Dans l’éditeur, utilisez les champs « Logo » et « Image principale ». Le fichier doit être une image de 2 Mo maximum.'],['Vérifier le rendu sur mobile','Ouvrez « Aperçu » puis cliquez sur « Mobile ». Revenez à l’éditeur avec « Modifier » si quelque chose ne vous plaît pas.'],['Publier son site','Ouvrez « Publication », entrez votre adresse (3 caractères minimum, en lettres minuscules, chiffres ou tirets), puis cliquez sur « Publier ».'],['Avoir un nom de domaine dédié','Un nom de domaine dédié à votre site, par exemple www.monbusiness.com, est inclus dans le plan Pro Max.'],['Comment fonctionnent les abonnements','Chaque plan est un abonnement de 3 mois. Basique convient aux sites simples et son premier mois est offert. Pro convient aux sites plus grands. Pro Max donne accès à tout, avec un nom de domaine dédié.'],['Retrouver mes sites','Le tableau de bord liste tous vos sites avec leur adresse et leur statut : publié ou brouillon.']];
-var b='<div class="help" style="max-width:760px;padding:32px 0 96px"><h1 style="font-size:clamp(32px,5vw,44px);margin-bottom:8px">Comment ça marche</h1><p class="sub">Créer un site avec Webora ne demande aucune compétence en code.</p><h3 style="margin-bottom:16px">Comment ça fonctionne</h3><div class="list">'+st.map(function(x){return '<div class="li"><div><b>'+x[0]+'</b><small>'+x[1]+'</small></div></div>'}).join('')+'</div><h3 style="margin:40px 0 8px">Comment faire</h3>'+fq.map(function(x){return '<details><summary>'+x[0]+'</summary><p>'+x[1]+'</p></details>'}).join('')+'<div class="row" style="margin-top:32px"><a class="btn p lg" href="#/'+(S.logged?'categories':'inscription')+'">'+(S.logged?'Créer un site':'Commencer gratuitement')+'</a></div></div>';
-return S.logged?shell('aide',b):head()+b+foot()+'</div>'},
-'contact':function(){return pub('contact','<div class="doc" style="max-width:760px;padding:32px 0 64px"><h1>Contact</h1><p class="sub">Une question sur Webora ? Écrivez-nous, nous répondons sous deux jours ouvrables.</p><div class="list" style="margin-bottom:32px"><div class="li"><b>E-mail</b><span>contact@webora.com</span></div><div class="li"><b>WhatsApp</b><span>+509 0000 0000</span></div><div class="li"><b>Développeur</b><span>Fawenbert Regis</span></div><div class="li"><b>Horaires</b><span>Lundi au vendredi, 8 h à 17 h</span></div></div><div id="cf" class="card" style="max-width:100%"><label style="margin-top:0">Nom</label><input id="cn" autocomplete="name"><label>Adresse e-mail</label><input id="ce" type="email" autocomplete="email"><label>Message</label><textarea id="cm"></textarea><p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p><button class="btn p" style="margin-top:16px" onclick="sendMsg()">Envoyer le message</button></div></div>')},
-'confidentialite':function(){return pub('',doc('Politique de confidentialité',[['Données que nous collectons','Votre nom, votre adresse e-mail, votre mot de passe (conservé sous forme chiffrée) et les contenus que vous ajoutez à votre site : textes, logo, images et coordonnées.'],['Pourquoi nous les utilisons','Pour créer et gérer votre compte, afficher et publier votre site, gérer votre abonnement et répondre à vos demandes.'],['Ce qui devient public','Les informations saisies dans votre site (nom de l’activité, téléphone, WhatsApp, adresse, réseaux sociaux) sont visibles par tous dès la publication. Ne publiez que ce que vous souhaitez rendre public.'],['Partage des données','Nous ne vendons pas vos données. Elles ne sont partagées qu’avec les prestataires nécessaires au service, comme l’hébergement et le paiement.'],['Sécurité','Chaque compte n’accède qu’à ses propres sites. Les mots de passe sont chiffrés et les échanges sont protégés.'],['Conservation','Vos données sont conservées tant que votre compte est actif. Vous pouvez demander leur suppression à tout moment.'],['Vos droits','Vous pouvez consulter, corriger ou supprimer vos données en nous écrivant depuis la page Contact.'],['Cookies','Webora utilise uniquement les éléments techniques nécessaires au fonctionnement du service.']]))},
-'conditions':function(){return pub('',doc('Conditions d’utilisation',[['Utilisation du service','Webora permet de créer et publier un site à partir de modèles. Vous fournissez des informations exactes à l’inscription et vous protégez votre mot de passe.'],['Abonnements','Les plans Basique, Pro et Pro Max sont des abonnements de 3 mois. Le premier mois du plan Basique est offert. Les tarifs vous sont communiqués avant toute souscription.'],['Votre contenu','Vous restez propriétaire des textes, logos et images que vous ajoutez, et vous confirmez avoir le droit de les utiliser.'],['Contenus interdits','Il est interdit de publier des contenus illégaux, trompeurs, haineux ou qui portent atteinte aux droits d’autrui. Un site qui ne respecte pas ces règles peut être suspendu.'],['Publication et domaines','Les sites sont publiés sur une adresse en webora.com. Le nom de domaine dédié est réservé au plan Pro Max.'],['Résiliation','Vous pouvez arrêter votre abonnement à tout moment. Il reste actif jusqu’à la fin de la période de 3 mois en cours.'],['Disponibilité','Nous faisons le maximum pour garder le service disponible, sans garantir l’absence d’interruption.'],['Modifications','Nous pouvons mettre à jour ces conditions. Les changements sont indiqués sur cette page.']]))},
-'parametres':function(){return shell('parametres','<h1>Paramètres</h1><p class="sub">Profil et abonnement.</p><div class="card" style="max-width:520px"><label style="margin-top:0">Nom complet</label><input placeholder="Votre nom"><label>Adresse e-mail</label><input type="email" placeholder="vous@exemple.com"><label>Plan actuel</label><div class="li" style="padding:12px 0;border:0"><b>BASIQUE</b><span class="tag ok">1er mois offert</span></div><div class="row" style="margin-top:16px"><button class="btn p">Enregistrer</button><button class="btn">Passer au plan Pro</button></div></div>')},
-'publication':function(){return shell('publication','<h1>Publication</h1><p class="sub">Choisissez l\'adresse de votre site.</p><div class="pub">'+(S.pub?'<div class="ok-box"><h3>Site publié</h3><p class="sub" style="margin:8px 0 16px">Votre site est en ligne à l\'adresse ci-dessous.</p><b>'+esc(S.sub)+'.webora.com</b><div class="row" style="margin-top:20px"><a class="btn" href="#/s/'+esc(S.sub)+'">Voir le site</a><a class="btn p" href="#/dashboard" onclick="S.pub=false">Retour au tableau de bord</a></div></div>':'<label>Adresse du site</label><div class="sd"><input id="sd" value="'+esc(S.sub)+'" placeholder="monbusiness" oninput="S.sub=this.value.toLowerCase().replace(/[^a-z0-9-]/g,\'\')"><span>.webora.com</span></div><p id="er" class="note" style="color:#C0392B;margin:8px 0 0"></p><div class="row" style="margin-top:24px"><a class="btn" href="#/apercu">Retour</a><button class="btn p" onclick="publish()">Publier</button></div>')+'</div>')}
+  {n:'Modèle',bg:'',fg:'',ac:''},
+  {n:'Ivoire & or',bg:'#FBF8F2',fg:'#2B2418',ac:'#B08D3F'},
+  {n:'Nuit',bg:'#0D0F14',fg:'#F1F2F5',ac:'#6C7BFF'},
+  {n:'Sauge',bg:'#F1F5EF',fg:'#1E2A20',ac:'#4C7A52'},
+  {n:'Terracotta',bg:'#FBF1EA',fg:'#3A241B',ac:'#C9622D'},
+  {n:'Améthyste',bg:'#F6F2FB',fg:'#251A33',ac:'#7B3FA0'},
+  {n:'Océan',bg:'#EFF6F8',fg:'#132229',ac:'#1E7C93'},
+  {n:'Corail',bg:'#FFF4F1',fg:'#2E1712',ac:'#E4573D'}
+];
+
+
+/* =========================================================
+   ÉTAT
+========================================================= */
+
+var S={
+  cat:'boutique',
+  tpl:'boutique-classique',
+
+  name:'Maison Delva',
+  slogan:'Des produits choisis avec soin',
+  desc:'Nous accompagnons nos clients depuis 2019.',
+
+  color:'',
+  pal:0,
+
+  phone:'+509 0000 0000',
+  email:'contact@exemple.com',
+  wa:'',
+  wam:'Bonjour, je viens de voir votre site',
+  hours:'Lundi au samedi, 9 h à 17 h',
+  addr:'',
+  ig:'',
+  fb:'',
+
+  logo:'',
+  img:'',
+
+  q:'',
+  f:'',
+
+  sub:'',
+  logged:false,
+  pub:false,
+  dev:'d',
+
+  it:null,
+
+  /* champs spécifiques */
+  reservation:'',
+  services:'',
+  rooms:'',
+  projects:'',
+  portfolio:'',
+  order:'',
+  delivery:''
 };
-function foot(){return '<footer style="border-top:1px solid var(--line);padding:32px 0;display:flex;gap:16px 24px;flex-wrap:wrap;justify-content:space-between;color:var(--mut);font-size:14px"><span>© 2026 Webora. Développé par Fawenbert Regis</span><span style="display:flex;gap:8px 24px;flex-wrap:wrap"><a href="#/aide">Comment ça marche</a><a href="#/contact">Contact</a><a href="#/confidentialite">Confidentialité</a><a href="#/conditions">Conditions d’utilisation</a></span></footer>'}
-function pub(on,b){return S.logged?shell(on,b):head()+b+foot()+'</div>'}
-function doc(t,a){return '<div class="doc" style="max-width:760px;padding:32px 0 64px"><h1>'+t+'</h1><p class="sub" style="margin-bottom:0">Dernière mise à jour : 27 septembre 2026</p>'+a.map(function(x){return '<h3>'+x[0]+'</h3><p>'+x[1]+'</p>'}).join('')+'</div>'}
-function sendMsg(){var n=$('#cn').value.trim(),e=$('#ce').value.trim(),m=$('#cm').value.trim();if(!n||!/^\S+@\S+\.\S+$/.test(e)||m.length<10){$('#er').textContent='Renseignez votre nom, une adresse e-mail valide et un message d’au moins 10 caractères.';return}$('#cf').innerHTML='<h3>Message envoyé</h3><p class="sub" style="margin:8px 0 0">Merci '+esc(n)+'. Nous vous répondrons à '+esc(e)+'.</p>'}
-function up(k,el,idx){var f=el.files[0];if(!f)return;if(f.size>2000000){el.value='';el.previousElementSibling.textContent='Fichier trop lourd : 2 Mo maximum';return}function apply(url){if(idx!=null){ensureItems();S.it[idx].img=url}else{S[k]=url}upd()}if(sb&&S.uid){var pa=S.uid+'/'+(S.sid||'x')+'-'+(idx!=null?'item'+idx:k)+'-'+Date.now();sb.storage.from('webora-media').upload(pa,f,{contentType:f.type}).then(function(r){if(r.error){el.previousElementSibling.textContent='Envoi impossible (image de 2 Mo maximum)';return}apply(sb.storage.from('webora-media').getPublicUrl(pa).data.publicUrl)});return}
-var r=new FileReader();r.onload=function(){apply(r.result)};r.readAsDataURL(f)}
-function save(){try{localStorage.setItem('webora',JSON.stringify(S))}catch(e){}}
-function ensureItems(){if(!S.it||!S.it.length){var c=CATS[tpl().c];S.it=c.it.map(function(x){return{t:x,d:'',img:''}})}return S.it}
-function getIt(i){return ensureItems()[i]}
-function setIt(i,k,v){ensureItems();S.it[i][k]=v;upd()}
-function addItem(){ensureItems();S.it.push({t:'Nouveau',d:'',img:''});persist();reRender()}
-function removeItem(i){ensureItems();if(S.it.length<=1)return;S.it.splice(i,1);persist();reRender()}
-function reRender(){var r=location.hash.replace(/^#\/?/,'')||'';if(!V[r])r='';$('#app').innerHTML=V[r]();anim()}
-function itemsForm(){var l={boutique:'Produit',restaurant:'Plat',salon:'Service',agence:'Service',hotel:'Chambre',photographe:'Prestation'}[tpl().c];var its=ensureItems();return '<div class="itf">'+its.map(function(x,n){return '<div class="itfi"><div class="row" style="justify-content:space-between;align-items:center;margin-top:14px"><b style="font-size:14px">'+l+' '+(n+1)+'</b>'+(its.length>1?'<button type="button" class="btn" style="padding:4px 10px;font-size:13px" onclick="removeItem('+n+')">Retirer</button>':'')+'</div><input value="'+esc(x.t)+'" oninput="setIt('+n+',\'t\',this.value)" placeholder="Nom"><input style="margin-top:6px" value="'+esc(x.d)+'" oninput="setIt('+n+',\'d\',this.value)" placeholder="Description courte"><label style="margin-top:6px;font-size:13px">Photo (2 Mo maximum)</label><input type="file" accept="image/*" onchange="up(\'itimg\',this,'+n+')">'+(x.img?'<img src="'+x.img+'" alt="" style="width:100%;height:80px;object-fit:cover;border-radius:6px;margin-top:6px">':'')+'</div>'}).join('')+'<button type="button" class="btn" style="margin-top:12px;width:100%" onclick="addItem()">+ Ajouter '+l.toLowerCase()+'</button>'}
-function sites(){if(sb)return (S.remote||[]).map(function(x){return{id:x.id,n:x.name,u:x.subdomain?x.subdomain+'.webora.com':'-',s:x.published?'Publié':'Brouillon',v:''}});return (S.live?[{n:S.name,u:S.sub+'.webora.com',s:'Publié',v:'0 visite'}]:[]).concat(SITES)}
-function ensureSub(uid){return sb.from('webora_subscriptions').select('id').eq('user_id',uid).maybeSingle().then(function(r){if(r.data)return;var now=new Date();return sb.from('webora_subscriptions').insert({user_id:uid,plan:'basique',status:'active',starts_at:now.toISOString(),free_until:new Date(now.getTime()+30*864e5).toISOString(),ends_at:new Date(now.getTime()+90*864e5).toISOString()})})}
-function loadSites(){return sb.from('webora_sites').select('id,name,subdomain,published').order('updated_at',{ascending:false}).then(function(r){S.remote=r.data||[]})}
-function logout(){S.logged=false;S.uid=null;S.sid=null;S.remote=[];if(sb)sb.auth.signOut()}
-function content(){var o={};['slogan','desc','color','pal','phone','email','wa','wam','hours','addr','ig','fb','logo','img','it'].forEach(function(k){o[k]=S[k]});return o}
-function persist(){if(!sb||!S.logged||!S.sid)return;clearTimeout(persist.t);persist.t=setTimeout(function(){sb.from('webora_sites').update({name:S.name,template:S.tpl,category:tpl().c,content:content()}).eq('id',S.sid).then(function(){})},800)}
-function newSite(){Object.assign(S,{sid:null,pub:false,name:'Mon activité',slogan:'Votre slogan ici',desc:'Décrivez votre activité en quelques mots.',logo:'',img:'',it:null,sub:''});if(!sb){go('editeur');return}
-sb.from('webora_sites').insert({name:S.name,template:S.tpl,category:tpl().c,content:content()}).select('id').single().then(function(r){if(r.data)S.sid=r.data.id;go('editeur')})}
-function changeTpl(){S.chg=0;persist();go('editeur')}
-function openSite(id){sb.from('webora_sites').select('*').eq('id',id).single().then(function(r){if(r.error)return;var d=r.data;Object.assign(S,{sid:d.id,name:d.name,tpl:d.template,cat:d.category,sub:d.subdomain||'',pub:false,it:null},d.content||{});go('editeur')})}
-function nf(){$('#app').innerHTML=head()+'<section class="hero"><h1>Site introuvable</h1><p>Cette adresse n’existe pas ou n’est pas publiée.</p></section></div>'}
-function viewSite(x){var show=function(d){var bak=Object.assign({},S);Object.assign(S,{name:d.name,tpl:d.template},d.content||{});var h=site();Object.assign(S,bak);$('#app').innerHTML=h+'<p style="text-align:center;padding:16px;font-size:13px;color:var(--mut)">Créé avec Webora</p>'};
-if(!sb){if(x===S.sub)show({name:S.name,template:S.tpl,content:content()});else nf();return}
-sb.from('webora_sites').select('name,template,content').eq('subdomain',x).eq('published',true).maybeSingle().then(function(r){if(r.data)show(r.data);else nf()})}
-function upd(){save();persist();var l=$('#live');if(l)l.innerHTML=site()}
-function go(r){location.hash='#/'+r}
-function auth(su){var e=$('#e').value.trim(),p=$('#p').value;
-if(!/^\S+@\S+\.\S+$/.test(e)){$('#er').textContent='Entrez une adresse e-mail valide.';return}
-if(p.length<6){$('#er').textContent='Le mot de passe doit contenir au moins 6 caractères.';return}
-if(!sb){S.logged=true;go('dashboard');return}
-var n=su?$('#n').value.trim():'';
-(su?sb.auth.signUp({email:e,password:p,options:{data:{full_name:n}}}):sb.auth.signInWithPassword({email:e,password:p})).then(function(r){
-if(r.error){$('#er').textContent=su?'Inscription impossible : '+r.error.message:'Adresse e-mail ou mot de passe incorrect.';return}
-if(!r.data.session){$('#er').textContent='Compte créé. Vérifiez votre e-mail pour le confirmer, puis connectez-vous.';return}
-S.logged=true;S.uid=r.data.session.user.id;ensureSub(S.uid).then(loadSites).then(function(){go('dashboard')})})}
-function publish(){if(S.sub.length<3){$('#er').textContent='L\'adresse doit contenir au moins 3 caractères (lettres, chiffres, tirets).';return}
-if(!sb){S.pub=true;S.live=1;route();return}
-if(!S.sid){$('#er').textContent='Créez d’abord un site depuis « Nouveau site ».';return}
-sb.from('webora_sites').update({subdomain:S.sub,published:true,name:S.name,content:content()}).eq('id',S.sid).then(function(r){if(r.error){$('#er').textContent=r.error.code==='23505'?'Cette adresse est déjà utilisée.':'Publication impossible, réessayez.';return}S.pub=true;loadSites().then(route)})}
-function anim(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-document.querySelectorAll('.stat b').forEach(function(b){var n=parseInt(b.textContent.replace(/\s/g,''),10),t0=null;if(isNaN(n))return;function f(t){t0=t0||t;var k=Math.min((t-t0)/700,1);b.textContent=Math.round(n*(1-Math.pow(1-k,3))).toLocaleString('fr-FR');if(k<1)requestAnimationFrame(f)}requestAnimationFrame(f)});
-if(!('IntersectionObserver' in window))return;
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
-document.querySelectorAll('.steps>div,.plans>.stat').forEach(function(el,i){el.classList.add('rv');el.style.transitionDelay=(i%4)*80+'ms';io.observe(el)})}
-var PROT=['dashboard','categories','modeles','editeur','apercu','publication'];
-function route(){var m=location.hash.match(/^#\/s\/([a-z0-9-]+)/);if(m){viewSite(m[1]);return}var r=(location.hash.replace(/^#\/?/,'')||'');if(!V[r])r='';
-if(PROT.indexOf(r)>-1&&!S.logged){go('connexion');return}
-$('#app').innerHTML=V[r]();window.scrollTo(0,0);anim();save()}
-try{Object.assign(S,JSON.parse(localStorage.getItem('webora')||'{}'))}catch(e){}
-window.addEventListener('hashchange',route);
-if(sb){sb.auth.getSession().then(function(r){var u=r.data.session&&r.data.session.user;S.logged=!!u;S.uid=u?u.id:null;return u?ensureSub(u.id).then(loadSites):0}).then(route)}else route();
+
+
+var SITES=[
+  {
+    n:'Kédassa Bazar',
+    u:'kedassa.webora.com',
+    s:'Publié',
+    v:'1 240 visites'
+  },
+  {
+    n:'Neyoo',
+    u:'neyoo.webora.com',
+    s:'Publié',
+    v:'860 visites'
+  },
+  {
+    n:'Brouillon salon',
+    u:'-',
+    s:'Brouillon',
+    v:'-'
+  }
+];
+
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
+var $=function(s){
+  return document.querySelector(s)
+};
+
+function tpl(){
+  return TPL.filter(function(t){
+    return t.id===S.tpl
+  })[0]||TPL[0]
+}
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;'
+    }[c]
+  })
+}
+
+function bind(k){
+  return 'oninput="S.'+k+'=this.value;upd()"'
+}
+
+function waLink(){
+  if(!S.wa)return '';
+
+  var d=S.wa.replace(/[^0-9]/g,'');
+
+  return 'https://wa.me/'+d+
+    '?text='+encodeURIComponent(S.wam||'Bonjour')
+}
+
+function pal(){
+  var p=PAL[S.pal||0];
+
+  return (p&&p.bg)?p:null
+}
+
+function category(){
+  return CATS[tpl().c]||CATS.boutique
+}
+
+
+/* =========================================================
+   ITEMS
+========================================================= */
+
+function ensureItems(){
+
+  if(!S.it||!S.it.length){
+
+    var c=category();
+
+    S.it=c.items.map(function(x){
+      return {
+        t:x,
+        d:'',
+        img:'',
+        price:'',
+        category:'',
+        extra:''
+      }
+    })
+  }
+
+  return S.it
+}
+
+function getIt(i){
+  return ensureItems()[i]
+}
+
+function setIt(i,k,v){
+  ensureItems();
+  S.it[i][k]=v;
+  upd()
+}
+
+function addItem(){
+  ensureItems();
+
+  S.it.push({
+    t:'Nouveau',
+    d:'',
+    img:'',
+    price:'',
+    category:'',
+    extra:''
+  });
+
+  persist();
+  reRender()
+}
+
+function removeItem(i){
+  ensureItems();
+
+  if(S.it.length<=1)return;
+
+  S.it.splice(i,1);
+
+  persist();
+  reRender()
+}
+
+
+/* =========================================================
+   RENDU DU SITE
+========================================================= */
+
+function site(){
+
+  var t=tpl();
+  var c=CATS[t.c];
+  var p=pal();
+
+  var bg=(p&&p.bg)||t.bg;
+  var fg=(p&&p.fg)||t.fg;
+  var ac=S.color||(p&&p.ac)||t.ac;
+
+  var dark=/^#(0|1)/.test(bg);
+
+  var btnFg=dark?bg:'#fff';
+
+  var link=waLink();
+
+  var ctaText=c.b;
+
+  var cta=link
+    ?'<a class="b" href="'+link+'" target="_blank" rel="noopener" style="background:'+ac+';color:'+btnFg+'">'+esc(ctaText)+'</a>'
+    :'<span class="b" style="background:'+ac+';color:'+btnFg+'">'+esc(ctaText)+'</span>';
+
+  var heroImage=S.img
+    ?'<div class="hero-media"><img src="'+S.img+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>'
+    :'';
+
+  var items=ensureItems();
+
+  var cards=items.map(function(x){
+
+    var title=esc(x.t);
+
+    var description=esc(
+      x.d||'Description à personnaliser'
+    );
+
+    var price=x.price
+      ?'<div class="price">'+esc(x.price)+'</div>'
+      :'';
+
+    var image=x.img
+      ?'<img src="'+x.img+'" alt="" style="width:100%;height:130px;object-fit:cover;border-radius:7px;margin-bottom:12px">'
+      :'';
+
+    return '<div style="border-color:'+ac+'55">'+
+      image+
+      '<b>'+title+'</b>'+
+      '<br>'+
+      '<span style="opacity:.6;font-size:14px">'+description+'</span>'+
+      price+
+      '</div>'
+  }).join('');
+
+  var contact=[
+    S.phone,
+    S.hours,
+    S.email,
+    S.addr,
+    S.ig&&'Instagram '+S.ig,
+    S.fb&&'Facebook '+S.fb
+  ].filter(Boolean);
+
+  var navLinks=
+    '<span class="site-nav-links">'+
+      '<span>Accueil</span>'+
+      '<span>'+esc(c.item)+'s</span>'+
+      '<span>Contact</span>'+
+    '</span>';
+
+  var categoryLabel=
+    '<div class="category-label">'+esc(c.n)+'</div>';
+
+  var hero=
+    '<div class="h '+(t.style==='restaurant'||t.style==='beauty'||t.style==='premium'||t.style==='hotel'||t.style==='luxury'||t.style==='portfolio'?'c':'')+'">'+
+      '<div>'+
+        categoryLabel+
+        '<h1>'+esc(S.slogan)+'</h1>'+
+        '<p>'+esc(S.desc)+'</p>'+
+        cta+
+      '</div>'+
+      heroImage+
+    '</div>';
+
+  var sectionTitle=
+    '<div class="site-section-title">'+
+      '<h2>'+esc(c.item)+'s</h2>'+
+      '<p>'+esc(c.d)+'</p>'+
+    '</div>';
+
+  var special='';
+
+  /* BOUTIQUE */
+  if(t.c==='boutique'){
+    special=
+      '<div class="site-section-title">'+
+        '<h2>Nos produits</h2>'+
+        '<p>Découvrez notre sélection.</p>'+
+      '</div>';
+  }
+
+  /* RESTAURANT */
+  if(t.c==='restaurant'){
+    special=
+      '<div class="site-section-title">'+
+        '<h2>Notre menu</h2>'+
+        '<p>Une sélection préparée avec soin.</p>'+
+      '</div>';
+  }
+
+  /* SALON */
+  if(t.c==='salon'){
+    special=
+      '<div class="site-section-title">'+
+        '<h2>Nos services</h2>'+
+        '<p>Découvrez nos prestations et prenez rendez-vous.</p>'+
+      '</div>';
+  }
+
+  /* AGENCE */
+  if(t.c==='agence'){
+    special=
+      '<div class="site-section-title">'+
+        '<h2>Nos services</h2>'+
+        '<p>Des solutions adaptées à votre entreprise.</p>'+
+      '</div>';
+  }
+
+  /* HOTEL */
+  if(t.c==='hotel'){
+    special=
+      '<div class="site-section-title">'+
+        '<h2>Nos chambres</h2>'+
+        '<p>Choisissez le séjour qui vous convient.</p>'+
+      '</div>';
+  }
+
+  /* PHOTOGRAPHE */
+  if(t.c==='photographe'){
+    special=
+      '<div class="site-section-title">'+
+        '<h2>Portfolio</h2>'+
+        '<p>Découvrez nos réalisations.</p>'+
+      '</div>';
+  }
+
+  /* BEAUTÉ */
+  if(t.c==='beaute'){
+    special=
+      '<div class="site-section-title">'+
+        '<h2>Notre sélection</h2>'+
+        '<p>Produits et soins pour votre beauté.</p>'+
+      '</div>';
+  }
+
+  return '<div class="site style-'+t.style+'" style="background:'+bg+';color:'+fg+';font-family:'+t.ff+';position:relative">'+
+
+    '<nav>'+
+      '<span>'+
+        (S.logo
+          ?'<img src="'+S.logo+'" alt="" style="height:30px;max-width:120px;object-fit:contain;vertical-align:middle;margin-right:9px">'
+          :''
+        )+
+        esc(S.name)+
+      '</span>'+
+      navLinks+
+    '</nav>'+
+
+    hero+
+
+    special+
+
+    '<div class="it">'+cards+'</div>'+
+
+    '<div class="ct" style="border-color:'+ac+'44">'+
+      contact.map(function(x){
+        return esc(x)
+      }).join(' &nbsp;|&nbsp; ')+
+    '</div>'+
+
+    (link
+      ?'<a href="'+link+'" target="_blank" rel="noopener" style="position:absolute;bottom:16px;right:16px;background:#25D366;color:#fff;border-radius:99px;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.2)">WhatsApp</a>'
+      :''
+    )+
+
+  '</div>'
+}
+
+
+/* =========================================================
+   MINIATURE DES MODÈLES
+========================================================= */
+
+function thumb(t){
+
+  return '<div class="thumb" style="background:'+t.bg+';color:'+t.fg+'">'+
+
+    '<div style="font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:1px">'+
+      esc(CATS[t.c].n)+
+    '</div>'+
+
+    '<i style="background:'+t.fg+';width:65%"></i>'+
+    '<i style="background:'+t.ac+';width:35%"></i>'+
+    '<i style="background:'+t.fg+';width:82%;opacity:.25"></i>'+
+
+  '</div>'
+}
+
+
+/* =========================================================
+   SHELL
+========================================================= */
+
+function shell(on,body){
+
+  var L=[
+    ['dashboard','Tableau de bord'],
+    ['categories','Nouveau site'],
+    ['editeur','Éditeur'],
+    ['apercu','Aperçu'],
+    ['publication','Publication'],
+    ['parametres','Paramètres'],
+    ['aide','Aide'],
+    ['contact','Contact']
+  ];
+
+  return '<div class="shell">'+
+
+    '<aside class="side">'+
+
+      '<a class="logo" href="#/">Webora</a>'+
+
+      L.map(function(l){
+        return '<a href="#/'+l[0]+'" class="'+
+          (l[0]===on?'on':'')+
+          '">'+l[1]+'</a>'
+      }).join('')+
+
+      '<a href="#/" onclick="logout()" style="margin-top:auto">Déconnexion</a>'+
+
+    '</aside>'+
+
+    '<main class="main">'+body+'</main>'+
+
+  '</div>'
+}
+
+
+function head(){
+
+  return '<div class="wrap">'+
+    '<div class="top">'+
+
+      '<a class="logo" href="#/">Webora</a>'+
+
+      '<nav>'+
+        '<a href="#/aide" style="padding:10px 8px">Comment ça marche</a>'+
+        '<a class="btn" href="#/connexion">Connexion</a>'+
+        '<a class="btn p" href="#/inscription">Créer un compte</a>'+
+      '</nav>'+
+
+    '</div>'
+}
+
+
+/* =========================================================
+   VUES
+========================================================= */
+
+var V={};
+
+
+/* ACCUEIL */
+
+V['']=function(){
+
+  return head()+
+
+    '<section class="hero">'+
+      '<h1>Créez votre site professionnel sans coder.</h1>'+
+      '<p>Choisissez votre activité, sélectionnez un modèle, personnalisez votre contenu et publiez votre site.</p>'+
+
+      '<div class="row">'+
+        '<a class="btn p lg" href="#/inscription">Commencer gratuitement</a>'+
+        '<a class="btn lg" href="#/connexion">Se connecter</a>'+
+      '</div>'+
+
+    '</section>'+
+
+    '<section class="steps">'+
+
+      '<div>'+
+        '<h3>1. Votre activité</h3>'+
+        '<p>Choisissez une catégorie adaptée à votre entreprise.</p>'+
+      '</div>'+
+
+      '<div>'+
+        '<h3>2. Votre modèle</h3>'+
+        '<p>Choisissez un design adapté à votre activité.</p>'+
+      '</div>'+
+
+      '<div>'+
+        '<h3>3. Personnalisez</h3>'+
+        '<p>Ajoutez vos produits, services, images et informations.</p>'+
+      '</div>'+
+
+      '<div>'+
+        '<h3>4. Publiez</h3>'+
+        '<p>Publiez votre site avec une adresse Webora.</p>'+
+      '</div>'+
+
+    '</section>'+
+
+    '<section style="padding:56px 0 96px;border-top:1px solid var(--line)">'+
+
+      '<h2 style="font-size:32px;margin-bottom:24px">Les catégories disponibles</h2>'+
+
+      '<div class="grid">'+
+
+        Object.keys(CATS).map(function(k){
+
+          return '<div class="stat">'+
+            '<h3>'+CATS[k].n+'</h3>'+
+            '<p class="sub" style="margin:8px 0">'+CATS[k].d+'</p>'+
+            '<div class="feature-list">'+
+              CATS[k].features.map(function(f){
+                return '<span>'+f+'</span>'
+              }).join('')+
+            '</div>'+
+          '</div>'
+
+        }).join('')+
+
+      '</div>'+
+
+    '</section>'+
+
+    '<section style="padding:56px 0 96px;border-top:1px solid var(--line)">'+
+
+      '<h2 style="font-size:32px;margin-bottom:24px">Des abonnements de 3 mois</h2>'+
+
+      '<div class="plans">'+
+
+        '<div class="stat">'+
+          '<h3>BASIQUE</h3>'+
+          '<p class="sub" style="margin:6px 0 0">Pour un site simple</p>'+
+          '<span class="tag ok">1er mois offert</span>'+
+          '<ul>'+
+            '<li>Abonnement de 3 mois</li>'+
+            '<li>Un site simple</li>'+
+            '<li>Sous-domaine webora.com</li>'+
+            '<li>Modèles inclus</li>'+
+            '<li>Branding Webora</li>'+
+          '</ul>'+
+        '</div>'+
+
+        '<div class="stat">'+
+          '<h3>PRO</h3>'+
+          '<p class="sub" style="margin:6px 0 0">Pour un site plus grand</p>'+
+          '<ul>'+
+            '<li>Abonnement de 3 mois</li>'+
+            '<li>Modèles premium</li>'+
+            '<li>Plus de pages</li>'+
+            '<li>Sans branding</li>'+
+            '<li>Statistiques</li>'+
+          '</ul>'+
+        '</div>'+
+
+        '<div class="stat">'+
+          '<h3>PRO MAX</h3>'+
+          '<p class="sub" style="margin:6px 0 0">Tout inclus</p>'+
+          '<ul>'+
+            '<li>Abonnement de 3 mois</li>'+
+            '<li>Tout le plan Pro</li>'+
+            '<li>Nom de domaine dédié</li>'+
+            '<li>Plusieurs sites</li>'+
+            '<li>Catalogue et boutique en ligne</li>'+
+            '<li>Statistiques avancées</li>'+
+          '</ul>'+
+        '</div>'+
+
+      '</div>'+
+
+      '<p class="note">Le premier mois du plan Basique est offert. Tarifs communiqués prochainement.</p>'+
+
+    '</section>'+
+
+    foot()+
+    '</div>'
+}
+
+
+/* INSCRIPTION */
+
+V['inscription']=function(){
+
+  return '<div class="auth">'+
+
+    '<div class="card">'+
+
+      '<h2>Créer un compte</h2>'+
+
+      '<label>Nom complet</label>'+
+      '<input id="n" autocomplete="name">'+
+
+      '<label>Adresse e-mail</label>'+
+      '<input id="e" type="email" autocomplete="email">'+
+
+      '<label>Mot de passe</label>'+
+      '<input id="p" type="password" autocomplete="new-password">'+
+
+      '<p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p>'+
+
+      '<button class="btn p" style="width:100%;margin-top:20px" onclick="auth(1)">Créer mon compte</button>'+
+
+      '<p class="note">En créant un compte, vous acceptez les <a href="#/conditions">conditions d’utilisation</a> et la <a href="#/confidentialite">politique de confidentialité</a>.</p>'+
+
+      '<p class="note">Déjà inscrit ? <a href="#/connexion">Se connecter</a></p>'+
+
+    '</div>'+
+
+  '</div>'
+}
+
+
+/* CONNEXION */
+
+V['connexion']=function(){
+
+  return '<div class="auth">'+
+
+    '<div class="card">'+
+
+      '<h2>Connexion</h2>'+
+
+      '<label>Adresse e-mail</label>'+
+      '<input id="e" type="email" autocomplete="email">'+
+
+      '<label>Mot de passe</label>'+
+      '<input id="p" type="password" autocomplete="current-password">'+
+
+      '<p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p>'+
+
+      '<button class="btn p" style="width:100%;margin-top:20px" onclick="auth(0)">Se connecter</button>'+
+
+      '<p class="note">Pas encore de compte ? <a href="#/inscription">Créer un compte</a></p>'+
+
+    '</div>'+
+
+  '</div>'
+}
+
+
+/* DASHBOARD */
+
+V['dashboard']=function(){
+
+  return shell(
+    'dashboard',
+
+    '<h1>Tableau de bord</h1>'+
+    '<p class="sub">Vos sites et leur activité.</p>'+
+
+    '<div class="stats">'+
+
+      '<div class="stat">'+
+        '<b>'+sites().length+'</b>'+
+        '<span>Sites</span>'+
+      '</div>'+
+
+      '<div class="stat">'+
+        '<b>'+sites().filter(function(x){
+          return x.s==='Publié'
+        }).length+'</b>'+
+        '<span>Publiés</span>'+
+      '</div>'+
+
+      '<div class="stat">'+
+        '<b>2 100</b>'+
+        '<span>Visites ce mois</span>'+
+      '</div>'+
+
+    '</div>'+
+
+    '<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:16px">'+
+      '<h3>Mes sites</h3>'+
+      '<a class="btn p" href="#/categories">Nouveau site</a>'+
+    '</div>'+
+
+    '<div class="list">'+
+
+      sites().map(function(s){
+
+        return '<div class="li"'+
+          (s.id
+            ?' onclick="openSite(\''+s.id+'\')" style="cursor:pointer"'
+            :''
+          )+
+        '>'+
+
+          '<div>'+
+            '<b>'+esc(s.n)+'</b>'+
+            '<small>'+esc(s.u)+' &nbsp; '+esc(s.v)+'</small>'+
+          '</div>'+
+
+          '<span class="tag '+(s.s==='Publié'?'ok':'')+'">'+
+            s.s+
+          '</span>'+
+
+        '</div>'
+
+      }).join('')+
+
+      (sites().length
+        ?''
+        :'<div class="li"><span style="color:var(--mut)">Aucun site pour le moment.</span></div>'
+      )+
+
+    '</div>'
+  )
+}
+
+
+/* =========================================================
+   CATÉGORIES
+========================================================= */
+
+V['categories']=function(){
+
+  return shell(
+    'categories',
+
+    '<h1>Choisissez votre activité</h1>'+
+    '<p class="sub">Webora adaptera l’éditeur et la structure de votre site à cette catégorie.</p>'+
+
+    '<div class="grid">'+
+
+      Object.keys(CATS).map(function(k,i){
+
+        var c=CATS[k];
+
+        return '<button class="opt cat-card" onclick="selectCategory(\''+k+'\')">'+
+
+          '<div>'+
+
+            '<div class="cat-top">'+
+
+              '<div>'+
+                '<h3>'+c.n+'</h3>'+
+                '<p>'+c.d+'</p>'+
+              '</div>'+
+
+              '<div class="cat-number">'+
+                String(i+1).padStart(2,'0')+
+              '</div>'+
+
+            '</div>'+
+
+            '<div class="feature-list">'+
+              c.features.map(function(f){
+                return '<span>'+f+'</span>'
+              }).join('')+
+            '</div>'+
+
+          '</div>'+
+
+          '<div style="margin-top:20px;color:var(--ac);font-weight:500">Voir les modèles →</div>'+
+
+        '</button>'
+
+      }).join('')+
+
+    '</div>'
+  )
+}
+
+
+function selectCategory(k){
+
+  S.cat=k;
+  S.q='';
+  S.f='';
+
+  routeTo('modeles')
+}
+
+
+/* =========================================================
+   MODÈLES
+========================================================= */
+
+V['modeles']=function(){
+
+  var q=S.q.toLowerCase();
+
+  var list=TPL.filter(function(t){
+
+    return t.c===S.cat &&
+
+      (!q ||
+        (t.n+' '+CATS[t.c].n)
+        .toLowerCase()
+        .indexOf(q)>-1
+      ) &&
+
+      (!S.f ||
+        (S.f==='p')===!!t.p
+      )
+  });
+
+  var c=CATS[S.cat]||CATS.boutique;
+
+  return shell(
+    'categories',
+
+    '<div class="row" style="justify-content:space-between;align-items:flex-start">'+
+
+      '<div>'+
+        '<h1>'+esc(c.n)+'</h1>'+
+        '<p class="sub">'+esc(c.d)+'</p>'+
+      '</div>'+
+
+      '<a class="btn" href="#/categories">Changer de catégorie</a>'+
+
+    '</div>'+
+
+    '<div class="tabs">'+
+
+      Object.keys(CATS).map(function(k){
+
+        return '<button class="btn '+(S.cat===k?'on':'')+'" onclick="selectCategory(\''+k+'\')">'+
+          CATS[k].n+
+        '</button>'
+
+      }).join('')+
+
+    '</div>'+
+
+    '<div class="row" style="margin-bottom:24px">'+
+
+      '<input type="search" placeholder="Rechercher un modèle" value="'+
+        esc(S.q)+
+      '" onchange="S.q=this.value;route()" style="max-width:280px">'+
+
+      '<select onchange="S.f=this.value;route()" style="max-width:180px">'+
+        '<option value="">Tous</option>'+
+        '<option value="g"'+(S.f==='g'?' selected':'')+'>Inclus</option>'+
+        '<option value="p"'+(S.f==='p'?' selected':'')+'>Premium</option>'+
+      '</select>'+
+
+    '</div>'+
+
+    '<div class="grid">'+
+
+      list.map(function(t){
+
+        return '<button class="opt" onclick="S.tpl=\''+t.id+'\';S.color=\'\';S.it=null;S.chg?changeTpl():newSite()">'+
+
+          thumb(t)+
+
+          '<h3>'+t.n+'</h3>'+
+
+          '<p>'+CATS[t.c].n+
+            ' <span class="tag">'+
+              (t.p?'Premium':'Inclus')+
+            '</span>'+
+          '</p>'+
+
+        '</button>'
+
+      }).join('')+
+
+    '</div>'+
+
+    (list.length
+      ?''
+      :'<p class="sub">Aucun modèle ne correspond à cette recherche.</p>'
+    )
+  )
+}
+
+
+/* =========================================================
+   ÉDITEUR
+========================================================= */
+
+V['editeur']=function(){
+
+  var t=tpl();
+  var c=CATS[t.c];
+
+  return shell(
+    'editeur',
+
+    '<h1>Éditeur</h1>'+
+
+    '<p class="sub">'+
+      esc(c.n)+
+      ' · Modèle '+esc(t.n)+
+      '. Les modifications apparaissent en direct.'+
+    '</p>'+
+
+    '<div class="ed">'+
+
+      '<div class="panel">'+
+
+        /* INFORMATIONS */
+        '<h3 class="section-title" style="margin-top:10px">Informations générales</h3>'+
+        '<p class="section-note">Les informations principales de votre activité.</p>'+
+
+        '<label>Nom de l’activité</label>'+
+        '<input value="'+esc(S.name)+'" '+bind('name')+'>'+
+
+        '<label>Slogan</label>'+
+        '<input value="'+esc(S.slogan)+'" '+bind('slogan')+'>'+
+
+        '<label>Description</label>'+
+        '<textarea '+bind('desc')+'>'+esc(S.desc)+'</textarea>'+
+
+        /* PALETTE */
+        '<label>Palette de couleurs</label>'+
+
+        '<div class="row">'+
+
+          PAL.map(function(x,i){
+
+            return '<button type="button" title="'+x.n+'" class="btn '+(S.pal===i?'p':'')+'" style="padding:7px 10px" onclick="S.pal='+i+';upd()">'+
+              x.n+
+            '</button>'
+
+          }).join('')+
+
+        '</div>'+
+
+        '<label>Couleur principale personnalisée</label>'+
+
+        '<input type="color" value="'+
+          (S.color||(pal()&&pal().ac)||t.ac)+
+        '" style="height:44px;padding:4px" oninput="S.color=this.value;upd()">'+
+
+        (S.color
+          ?'<button type="button" class="btn" style="margin-top:8px" onclick="S.color=\'\';upd()">Revenir à la palette</button>'
+          :''
+        )+
+
+        /* CONTENU SPÉCIFIQUE */
+        categoryEditor()+
+
+        /* CONTACT */
+        '<h3 class="section-title">Contact</h3>'+
+
+        '<label>Horaires</label>'+
+        '<input value="'+esc(S.hours)+'" '+bind('hours')+'>'+
+
+        '<label>Téléphone</label>'+
+        '<input value="'+esc(S.phone)+'" '+bind('phone')+'>'+
+
+        '<label>E-mail</label>'+
+        '<input value="'+esc(S.email)+'" '+bind('email')+'>'+
+
+        '<label>Numéro WhatsApp</label>'+
+        '<input value="'+esc(S.wa)+'" '+bind('wa')+' placeholder="50900000000">'+
+
+        '<label>Message WhatsApp</label>'+
+        '<input value="'+esc(S.wam)+'" '+bind('wam')+'>'+
+
+        '<label>Adresse</label>'+
+        '<input value="'+esc(S.addr)+'" '+bind('addr')+'>'+
+
+        '<label>Instagram</label>'+
+        '<input value="'+esc(S.ig)+'" '+bind('ig')+'>'+
+
+        '<label>Facebook</label>'+
+        '<input value="'+esc(S.fb)+'" '+bind('fb')+'>'+
+
+        /* MÉDIAS */
+        '<h3 class="section-title">Images</h3>'+
+
+        '<label>Logo — 2 Mo maximum</label>'+
+        '<input type="file" accept="image/*" onchange="up(\'logo\',this)">'+
+
+        '<label>Image principale — 2 Mo maximum</label>'+
+        '<input type="file" accept="image/*" onchange="up(\'img\',this)">'+
+
+        '<div class="row" style="margin-top:20px">'+
+          '<a class="btn" href="#/modeles" onclick="S.chg=1">Changer de modèle</a>'+
+          '<a class="btn p" href="#/apercu">Aperçu</a>'+
+        '</div>'+
+
+      '</div>'+
+
+      '<div class="frame">'+
+        '<div class="bar">Aperçu en direct</div>'+
+        '<div id="live">'+site()+'</div>'+
+      '</div>'+
+
+    '</div>'
+  )
+}
+
+
+/* =========================================================
+   ÉDITEUR SPÉCIFIQUE AUX CATÉGORIES
+========================================================= */
+
+function categoryEditor(){
+
+  var c=category();
+
+  var html=
+    '<h3 class="section-title">'+esc(c.n)+'</h3>'+
+    '<p class="section-note">Ajoutez les éléments spécifiques à votre activité.</p>';
+
+  html+=itemsForm();
+
+  /* Boutique */
+  if(tpl().c==='boutique'){
+
+    html+=
+      '<label>Informations de livraison</label>'+
+      '<input value="'+esc(S.delivery)+'" '+bind('delivery')+' placeholder="Livraison locale, retrait en magasin...">'+
+
+      '<label>Informations de commande</label>'+
+      '<textarea '+bind('order')+'>'+esc(S.order)+'</textarea>';
+  }
+
+  /* Restaurant */
+  if(tpl().c==='restaurant'){
+
+    html+=
+      '<label>Informations de réservation</label>'+
+      '<textarea '+bind('reservation')+'>'+esc(S.reservation)+'</textarea>';
+  }
+
+  /* Salon */
+  if(tpl().c==='salon'){
+
+    html+=
+      '<label>Prise de rendez-vous</label>'+
+      '<textarea '+bind('reservation')+'>'+esc(S.reservation)+'</textarea>';
+  }
+
+  /* Agence */
+  if(tpl().c==='agence'){
+
+    html+=
+      '<label>Présentation de vos projets</label>'+
+      '<textarea '+bind('projects')+'>'+esc(S.projects)+'</textarea>';
+  }
+
+  /* Hôtel */
+  if(tpl().c==='hotel'){
+
+    html+=
+      '<label>Informations de réservation</label>'+
+      '<textarea '+bind('reservation')+'>'+esc(S.reservation)+'</textarea>';
+  }
+
+  /* Photographe */
+  if(tpl().c==='photographe'){
+
+    html+=
+      '<label>Présentation du portfolio</label>'+
+      '<textarea '+bind('portfolio')+'>'+esc(S.portfolio)+'</textarea>';
+  }
+
+  /* Beauté */
+  if(tpl().c==='beaute'){
+
+    html+=
+      '<label>Informations de commande</label>'+
+      '<textarea '+bind('order')+'>'+esc(S.order)+'</textarea>';
+  }
+
+  return html
+}
+
+
+/* =========================================================
+   FORMULAIRE DES ITEMS
+========================================================= */
+
+function itemsForm(){
+
+  var c=category();
+  var its=ensureItems();
+
+  return '<div class="itf">'+
+
+    its.map(function(x,n){
+
+      return '<div class="item-box">'+
+
+        '<div class="row" style="justify-content:space-between;align-items:center">'+
+
+          '<b style="font-size:14px">'+
+            esc(c.item)+' '+(n+1)+
+          '</b>'+
+
+          (its.length>1
+            ?'<button type="button" class="btn" style="padding:4px 10px;font-size:13px" onclick="removeItem('+n+')">Retirer</button>'
+            :''
+          )+
+
+        '</div>'+
+
+        '<label>Nom</label>'+
+        '<input value="'+esc(x.t)+'" oninput="setIt('+n+',\'t\',this.value)" placeholder="'+esc(c.item)+'">'+
+
+        '<label>Description</label>'+
+        '<input value="'+esc(x.d)+'" oninput="setIt('+n+',\'d\',this.value)" placeholder="Description courte">'+
+
+        '<label>Prix</label>'+
+        '<input value="'+esc(x.price||'')+'" oninput="setIt('+n+',\'price\',this.value)" placeholder="Ex. 1 500 HTG">'+
+
+        '<label>Catégorie</label>'+
+        '<input value="'+esc(x.category||'')+'" oninput="setIt('+n+',\'category\',this.value)" placeholder="Ex. Nouveautés">'+
+
+        '<label>Photo — 2 Mo maximum</label>'+
+        '<input type="file" accept="image/*" onchange="up(\'itimg\',this,'+n+')">'+
+
+        (x.img
+          ?'<img src="'+x.img+'" alt="" style="width:100%;height:100px;object-fit:cover;border-radius:7px;margin-top:8px">'
+          :''
+        )+
+
+      '</div>'
+
+    }).join('')+
+
+    '<button type="button" class="btn" style="margin-top:12px;width:100%" onclick="addItem()">+ Ajouter '+esc(c.item.toLowerCase())+'</button>'+
+
+  '</div>'
+}
+
+
+/* =========================================================
+   APERÇU
+========================================================= */
+
+V['apercu']=function(){
+
+  return shell(
+    'apercu',
+
+    '<div class="row" style="justify-content:space-between;align-items:center">'+
+
+      '<div>'+
+        '<h1>Aperçu</h1>'+
+        '<p class="sub">Vérifiez votre site avant de le publier.</p>'+
+      '</div>'+
+
+      '<div class="row">'+
+
+        '<button class="btn '+(S.dev==='d'?'p':'')+'" onclick="S.dev=\'d\';route()">Ordinateur</button>'+
+        '<button class="btn '+(S.dev==='m'?'p':'')+'" onclick="S.dev=\'m\';route()">Mobile</button>'+
+
+        '<a class="btn" href="#/editeur">Modifier</a>'+
+        '<a class="btn p" href="#/publication">Continuer</a>'+
+
+      '</div>'+
+
+    '</div>'+
+
+    '<div class="frame" style="max-width:'+
+      (S.dev==='m'?'380px':'100%')+
+    '">'+
+
+      '<div class="bar">'+
+        esc(S.sub||'monsite')+
+        '.webora.com'+
+      '</div>'+
+
+      site()+
+
+    '</div>'
+  )
+}
+
+
+/* =========================================================
+   AIDE
+========================================================= */
+
+V['aide']=function(){
+
+  var st=[
+
+    [
+      '1. Choisir votre activité',
+      'Sélectionnez votre catégorie : boutique, restaurant, salon, agence, hôtel, photographe ou beauté.'
+    ],
+
+    [
+      '2. Choisir un modèle',
+      'Chaque catégorie possède ses propres modèles visuels.'
+    ],
+
+    [
+      '3. Personnaliser',
+      'Ajoutez vos informations, produits, services, chambres, prestations ou projets selon votre activité.'
+    ],
+
+    [
+      '4. Prévisualiser',
+      'Visualisez votre site sur ordinateur ou mobile.'
+    ],
+
+    [
+      '5. Publier',
+      'Choisissez votre adresse Webora et publiez votre site.'
+    ]
+
+  ];
+
+  var fq=[
+
+    [
+      'Créer un compte',
+      'Cliquez sur « Créer un compte », entrez votre adresse e-mail et un mot de passe de 6 caractères minimum.'
+    ],
+
+    [
+      'Choisir une catégorie',
+      'Dans « Nouveau site », choisissez le type d’activité correspondant à votre entreprise.'
+    ],
+
+    [
+      'Changer de modèle',
+      'Depuis l’éditeur, cliquez sur « Changer de modèle » pour essayer un autre design de la même catégorie.'
+    ],
+
+    [
+      'Ajouter des produits ou services',
+      'L’éditeur affiche automatiquement les éléments adaptés à votre catégorie.'
+    ],
+
+    [
+      'Ajouter une image',
+      'Utilisez les champs d’image dans l’éditeur. Les images sont limitées à 2 Mo.'
+    ],
+
+    [
+      'Publier',
+      'Dans « Publication », choisissez une adresse d’au moins 3 caractères.'
+    ]
+
+  ];
+
+  var b=
+
+    '<div class="help" style="max-width:760px;padding:32px 0 96px">'+
+
+      '<h1>Comment ça marche</h1>'+
+      '<p class="sub">Créez votre site avec Webora sans avoir besoin de coder.</p>'+
+
+      '<h3 style="margin-bottom:16px">Le fonctionnement</h3>'+
+
+      '<div class="list">'+
+
+        st.map(function(x){
+
+          return '<div class="li">'+
+            '<div>'+
+              '<b>'+x[0]+'</b>'+
+              '<small>'+x[1]+'</small>'+
+            '</div>'+
+          '</div>'
+
+        }).join('')+
+
+      '</div>'+
+
+      '<h3 style="margin:40px 0 8px">Questions fréquentes</h3>'+
+
+      fq.map(function(x){
+
+        return '<details>'+
+          '<summary>'+x[0]+'</summary>'+
+          '<p>'+x[1]+'</p>'+
+        '</details>'
+
+      }).join('')+
+
+      '<div class="row" style="margin-top:32px">'+
+        '<a class="btn p lg" href="#/'+
+          (S.logged?'categories':'inscription')+
+        '">'+
+          (S.logged?'Créer un site':'Commencer gratuitement')+
+        '</a>'+
+      '</div>'+
+
+    '</div>';
+
+  return S.logged
+    ?shell('aide',b)
+    :head()+b+foot()+'</div>'
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+V['contact']=function(){
+
+  return pub(
+    'contact',
+
+    '<div class="doc" style="max-width:760px;padding:32px 0 64px">'+
+
+      '<h1>Contact</h1>'+
+
+      '<p class="sub">Une question sur Webora ? Écrivez-nous.</p>'+
+
+      '<div class="list" style="margin-bottom:32px">'+
+
+        '<div class="li"><b>E-mail</b><span>contact@webora.com</span></div>'+
+        '<div class="li"><b>WhatsApp</b><span>+509 0000 0000</span></div>'+
+        '<div class="li"><b>Développeur</b><span>Fawenbert Regis</span></div>'+
+        '<div class="li"><b>Horaires</b><span>Lundi au vendredi, 8 h à 17 h</span></div>'+
+
+      '</div>'+
+
+      '<div id="cf" class="card" style="max-width:100%">'+
+
+        '<label style="margin-top:0">Nom</label>'+
+        '<input id="cn" autocomplete="name">'+
+
+        '<label>Adresse e-mail</label>'+
+        '<input id="ce" type="email" autocomplete="email">'+
+
+        '<label>Message</label>'+
+        '<textarea id="cm"></textarea>'+
+
+        '<p id="er" class="note" style="color:#C0392B;margin:12px 0 0"></p>'+
+
+        '<button class="btn p" style="margin-top:16px" onclick="sendMsg()">Envoyer le message</button>'+
+
+      '</div>'+
+
+    '</div>'
+  )
+}
+
+
+/* =========================================================
+   CONFIDENTIALITÉ
+========================================================= */
+
+V['confidentialite']=function(){
+
+  return pub(
+    '',
+    doc(
+      'Politique de confidentialité',
+      [
+
+        [
+          'Données que nous collectons',
+          'Votre nom, votre adresse e-mail, votre mot de passe et les contenus que vous ajoutez à votre site.'
+        ],
+
+        [
+          'Pourquoi nous les utilisons',
+          'Pour créer et gérer votre compte, afficher et publier votre site et gérer votre abonnement.'
+        ],
+
+        [
+          'Ce qui devient public',
+          'Les informations que vous saisissez dans votre site sont visibles publiquement dès sa publication.'
+        ],
+
+        [
+          'Partage des données',
+          'Nous ne vendons pas vos données. Elles peuvent être partagées avec les prestataires nécessaires au fonctionnement du service.'
+        ],
+
+        [
+          'Sécurité',
+          'Chaque compte n’accède qu’à ses propres sites.'
+        ],
+
+        [
+          'Vos droits',
+          'Vous pouvez demander la consultation, correction ou suppression de vos données.'
+        ]
+
+      ]
+    )
+  )
+}
+
+
+/* =========================================================
+   CONDITIONS
+========================================================= */
+
+V['conditions']=function(){
+
+  return pub(
+    '',
+    doc(
+      'Conditions d’utilisation',
+      [
+
+        [
+          'Utilisation du service',
+          'Webora permet de créer et publier des sites à partir de modèles.'
+        ],
+
+        [
+          'Abonnements',
+          'Les plans sont proposés sous forme d’abonnements de 3 mois.'
+        ],
+
+        [
+          'Votre contenu',
+          'Vous restez responsable des textes, images, logos et informations que vous ajoutez.'
+        ],
+
+        [
+          'Contenus interdits',
+          'Il est interdit de publier des contenus illégaux, trompeurs ou portant atteinte aux droits d’autrui.'
+        ],
+
+        [
+          'Publication',
+          'Les sites sont publiés sur une adresse Webora.'
+        ],
+
+        [
+          'Disponibilité',
+          'Nous faisons le maximum pour maintenir le service disponible.'
+        ]
+
+      ]
+    )
+  )
+}
+
+
+/* =========================================================
+   PARAMÈTRES
+========================================================= */
+
+V['parametres']=function(){
+
+  return shell(
+    'parametres',
+
+    '<h1>Paramètres</h1>'+
+    '<p class="sub">Profil et abonnement.</p>'+
+
+    '<div class="card" style="max-width:520px">'+
+
+      '<label style="margin-top:0">Nom complet</label>'+
+      '<input placeholder="Votre nom">'+
+
+      '<label>Adresse e-mail</label>'+
+      '<input type="email" placeholder="vous@exemple.com">'+
+
+      '<label>Plan actuel</label>'+
+
+      '<div class="li" style="padding:12px 0;border:0">'+
+        '<b>BASIQUE</b>'+
+        '<span class="tag ok">1er mois offert</span>'+
+      '</div>'+
+
+      '<div class="row" style="margin-top:16px">'+
+        '<button class="btn p">Enregistrer</button>'+
+        '<button class="btn">Passer au plan Pro</button>'+
+      '</div>'+
+
+    '</div>'
+  )
+}
+
+
+/* =========================================================
+   PUBLICATION
+========================================================= */
+
+V['publication']=function(){
+
+  return shell(
+    'publication',
+
+    '<h1>Publication</h1>'+
+    '<p class="sub">Choisissez l’adresse de votre site.</p>'+
+
+    '<div class="pub">'+
+
+      (
+        S.pub
+
+        ?
+
+        '<div class="ok-box">'+
+
+          '<h3>Site publié</h3>'+
+
+          '<p class="sub" style="margin:8px 0 16px">Votre site est en ligne à l’adresse ci-dessous.</p>'+
+
+          '<b>'+esc(S.sub)+'.webora.com</b>'+
+
+          '<div class="row" style="margin-top:20px">'+
+            '<a class="btn" href="#/s/'+esc(S.sub)+'">Voir le site</a>'+
+            '<a class="btn p" href="#/dashboard" onclick="S.pub=false">Retour au tableau de bord</a>'+
+          '</div>'+
+
+        '</div>'
+
+        :
+
+        '<label>Adresse du site</label>'+
+
+        '<div class="sd">'+
+          '<input id="sd" value="'+esc(S.sub)+'" placeholder="monbusiness" oninput="S.sub=this.value.toLowerCase().replace(/[^a-z0-9-]/g,\'\')">'+
+          '<span>.webora.com</span>'+
+        '</div>'+
+
+        '<p id="er" class="note" style="color:#C0392B;margin:8px 0 0"></p>'+
+
+        '<div class="row" style="margin-top:24px">'+
+          '<a class="btn" href="#/apercu">Retour</a>'+
+          '<button class="btn p" onclick="publish()">Publier</button>'+
+        '</div>'
+      )+
+
+    '</div>'
+  )
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+function foot(){
+
+  return '<footer style="border-top:1px solid var(--line);padding:32px 0;display:flex;gap:16px 24px;flex-wrap:wrap;justify-content:space-between;color:var(--mut);font-size:14px">'+
+
+    '<span>© 2026 Webora. Développé par Fawenbert Regis</span>'+
+
+    '<span style="display:flex;gap:8px 24px;flex-wrap:wrap">'+
+      '<a href="#/aide">Comment ça marche</a>'+
+      '<a href="#/contact">Contact</a>'+
+      '<a href="#/confidentialite">Confidentialité</a>'+
+      '<a href="#/conditions">Conditions d’utilisation</a>'+
+    '</span>'+
+
+  '</footer>'
+}
+
+
+function pub(on,b){
+
+  return S.logged
+    ?shell(on,b)
+    :head()+b+foot()+'</div>'
+}
+
+
+function doc(t,a){
+
+  return '<div class="doc" style="max-width:760px;padding:32px 0 64px">'+
+
+    '<h1>'+t+'</h1>'+
+
+    '<p class="sub" style="margin-bottom:0">Dernière mise à jour : 27 septembre 2026</p>'+
+
+    a.map(function(x){
+
+      return '<h3>'+x[0]+'</h3>'+
+        '<p>'+x[1]+'</p>'
+
+    }).join('')+
+
+  '</div>'
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+function sendMsg(){
+
+  var n=$('#cn').value.trim();
+  var e=$('#ce').value.trim();
+  var m=$('#cm').value.trim();
+
+  if(
+    !n||
+    !/^\S+@\S+\.\S+$/.test(e)||
+    m.length<10
+  ){
+
+    $('#er').textContent=
+      'Renseignez votre nom, une adresse e-mail valide et un message d’au moins 10 caractères.';
+
+    return
+  }
+
+  $('#cf').innerHTML=
+    '<h3>Message envoyé</h3>'+
+    '<p class="sub" style="margin:8px 0 0">Merci '+esc(n)+'. Nous vous répondrons à '+esc(e)+'.</p>'
+}
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+function up(k,el,idx){
+
+  var f=el.files[0];
+
+  if(!f)return;
+
+  if(f.size>2000000){
+
+    el.value='';
+
+    if(el.previousElementSibling){
+      el.previousElementSibling.textContent=
+        'Fichier trop lourd : 2 Mo maximum';
+    }
+
+    return
+  }
+
+  function apply(url){
+
+    if(idx!=null){
+
+      ensureItems();
+
+      S.it[idx].img=url
+
+    }else{
+
+      S[k]=url
+
+    }
+
+    upd()
+  }
+
+  if(sb&&S.uid){
+
+    var pa=
+      S.uid+'/'+
+      (S.sid||'x')+'-'+
+      (idx!=null?'item'+idx:k)+'-'+
+      Date.now();
+
+    sb.storage
+      .from('webora-media')
+      .upload(pa,f,{
+        contentType:f.type
+      })
+      .then(function(r){
+
+        if(r.error){
+
+          if(el.previousElementSibling){
+            el.previousElementSibling.textContent=
+              'Envoi impossible.';
+          }
+
+          return
+        }
+
+        apply(
+          sb.storage
+            .from('webora-media')
+            .getPublicUrl(pa)
+            .data
+            .publicUrl
+        )
+
+      });
+
+    return
+  }
+
+  var r=new FileReader();
+
+  r.onload=function(){
+    apply(r.result)
+  };
+
+  r.readAsDataURL(f)
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function save(){
+
+  try{
+    localStorage.setItem(
+      'webora',
+      JSON.stringify(S)
+    )
+  }catch(e){}
+}
+
+
+/* =========================================================
+   PERSISTANCE
+========================================================= */
+
+function content(){
+
+  var o={};
+
+  [
+    'slogan',
+    'desc',
+    'color',
+    'pal',
+    'phone',
+    'email',
+    'wa',
+    'wam',
+    'hours',
+    'addr',
+    'ig',
+    'fb',
+    'logo',
+    'img',
+    'it',
+    'reservation',
+    'services',
+    'rooms',
+    'projects',
+    'portfolio',
+    'order',
+    'delivery'
+  ].forEach(function(k){
+
+    o[k]=S[k]
+
+  });
+
+  return o
+}
+
+
+/* =========================================================
+   SITES
+========================================================= */
+
+function sites(){
+
+  if(sb){
+
+    return (S.remote||[]).map(function(x){
+
+      return {
+        id:x.id,
+        n:x.name,
+        u:x.subdomain
+          ?x.subdomain+'.webora.com'
+          :'-',
+        s:x.published
+          ?'Publié'
+          :'Brouillon',
+        v:''
+      }
+
+    })
+  }
+
+  return (
+    S.live
+      ?[
+        {
+          n:S.name,
+          u:S.sub+'.webora.com',
+          s:'Publié',
+          v:'0 visite'
+        }
+      ]
+      :[]
+  ).concat(SITES)
+}
+
+
+/* =========================================================
+   ABONNEMENT
+========================================================= */
+
+function ensureSub(uid){
+
+  return sb
+    .from('webora_subscriptions')
+    .select('id')
+    .eq('user_id',uid)
+    .maybeSingle()
+    .then(function(r){
+
+      if(r.data)return;
+
+      var now=new Date();
+
+      return sb
+        .from('webora_subscriptions')
+        .insert({
+          user_id:uid,
+          plan:'basique',
+          status:'active',
+          starts_at:now.toISOString(),
+          free_until:new Date(
+            now.getTime()+30*864e5
+          ).toISOString(),
+          ends_at:new Date(
+            now.getTime()+90*864e5
+          ).toISOString()
+        })
+    })
+}
+
+
+/* =========================================================
+   CHARGER LES SITES
+========================================================= */
+
+function loadSites(){
+
+  return sb
+    .from('webora_sites')
+    .select('id,name,subdomain,published')
+    .eq('owner',S.uid)
+    .order('updated_at',{ascending:false})
+    .then(function(r){
+
+      S.remote=r.data||[]
+
+    })
+}
+
+
+/* =========================================================
+   DÉCONNEXION
+========================================================= */
+
+function logout(){
+
+  S.logged=false;
+  S.uid=null;
+  S.sid=null;
+  S.remote=[];
+
+  if(sb)sb.auth.signOut()
+}
+
+
+/* =========================================================
+   NOUVEAU SITE
+========================================================= */
+
+function newSite(){
+
+  Object.assign(
+    S,
+    {
+      sid:null,
+      pub:false,
+      name:'Mon activité',
+      slogan:'Votre slogan ici',
+      desc:'Décrivez votre activité en quelques mots.',
+      logo:'',
+      img:'',
+      it:null,
+      sub:'',
+      reservation:'',
+      services:'',
+      rooms:'',
+      projects:'',
+      portfolio:'',
+      order:'',
+      delivery:''
+    }
+  );
+
+  if(!sb){
+
+    go('editeur');
+
+    return
+  }
+
+  sb
+    .from('webora_sites')
+    .insert({
+      name:S.name,
+      template:S.tpl,
+      category:tpl().c,
+      content:content()
+    })
+    .select('id')
+    .single()
+    .then(function(r){
+
+      if(r.data){
+
+        S.sid=r.data.id;
+        go('editeur')
+
+      }else{
+
+        alert(
+          r.error
+            ?r.error.message
+            :'Impossible de créer le site.'
+        )
+
+      }
+
+    })
+}
+
+
+/* =========================================================
+   CHANGEMENT DE MODÈLE
+========================================================= */
+
+function changeTpl(){
+
+  S.chg=0;
+
+  /* on garde les contenus existants */
+
+  persist();
+
+  go('editeur')
+}
+
+
+/* =========================================================
+   OUVRIR UN SITE
+========================================================= */
+
+function openSite(id){
+
+  sb
+    .from('webora_sites')
+    .select('*')
+    .eq('id',id)
+    .eq('owner',S.uid)
+    .single()
+    .then(function(r){
+
+      if(r.error)return;
+
+      var d=r.data;
+
+      Object.assign(
+        S,
+        {
+          sid:d.id,
+          name:d.name,
+          tpl:d.template,
+          cat:d.category,
+          sub:d.subdomain||'',
+          pub:!!d.published,
+          it:null
+        },
+        d.content||{}
+      );
+
+      go('editeur')
+
+    })
+}
+
+
+/* =========================================================
+   SAUVEGARDE
+========================================================= */
+
+function persist(){
+
+  if(
+    !sb||
+    !S.logged||
+    !S.sid
+  )return;
+
+  clearTimeout(persist.t);
+
+  persist.t=setTimeout(function(){
+
+    sb
+      .from('webora_sites')
+      .update({
+        name:S.name,
+        template:S.tpl,
+        category:tpl().c,
+        content:content()
+      })
+      .eq('id',S.sid)
+      .eq('owner',S.uid)
+      .then(function(){})
+
+  },800)
+}
+
+
+/* =========================================================
+   APERÇU PUBLIC
+========================================================= */
+
+function nf(){
+
+  $('#app').innerHTML=
+    head()+
+    '<section class="hero">'+
+      '<h1>Site introuvable</h1>'+
+      '<p>Cette adresse n’existe pas ou n’est pas publiée.</p>'+
+    '</section>'+
+    '</div>'
+}
+
+
+function viewSite(x){
+
+  var show=function(d){
+
+    var bak=Object.assign({},S);
+
+    Object.assign(
+      S,
+      {
+        name:d.name,
+        tpl:d.template
+      },
+      d.content||{}
+    );
+
+    var h=site();
+
+    Object.assign(S,bak);
+
+    $('#app').innerHTML=
+      h+
+      '<p style="text-align:center;padding:16px;font-size:13px;color:var(--mut)">Créé avec Webora</p>'
+  };
+
+  if(!sb){
+
+    if(x===S.sub){
+
+      show({
+        name:S.name,
+        template:S.tpl,
+        content:content()
+      })
+
+    }else{
+
+      nf()
+
+    }
+
+    return
+  }
+
+  sb
+    .from('webora_sites')
+    .select('name,template,content')
+    .eq('subdomain',x)
+    .eq('published',true)
+    .maybeSingle()
+    .then(function(r){
+
+      if(r.data)show(r.data);
+      else nf()
+
+    })
+}
+
+
+/* =========================================================
+   MISE À JOUR
+========================================================= */
+
+function upd(){
+
+  save();
+  persist();
+
+  var l=$('#live');
+
+  if(l){
+
+    l.innerHTML=site()
+
+  }
+}
+
+
+/* =========================================================
+   ROUTES
+========================================================= */
+
+function go(r){
+
+  location.hash='#/'+r
+}
+
+function routeTo(r){
+
+  location.hash='#/'+r
+}
+
+function reRender(){
+
+  var r=
+    location.hash.replace(/^#\/?/,'')||'';
+
+  if(!V[r])r='';
+
+  $('#app').innerHTML=V[r]();
+
+  anim()
+}
+
+
+function route(){
+
+  var m=
+    location.hash.match(/^#\/s\/([a-z0-9-]+)/);
+
+  if(m){
+
+    viewSite(m[1]);
+
+    return
+  }
+
+  var r=
+    location.hash.replace(/^#\/?/,'')||'';
+
+  if(!V[r])r='';
+
+  if(
+    PROT.indexOf(r)>-1 &&
+    !S.logged
+  ){
+
+    go('connexion');
+
+    return
+  }
+
+  $('#app').innerHTML=V[r]();
+
+  window.scrollTo(0,0);
+
+  anim();
+
+  save()
+}
+
+
+/* =========================================================
+   AUTHENTIFICATION
+========================================================= */
+
+function auth(su){
+
+  var e=$('#e').value.trim();
+  var p=$('#p').value;
+
+  if(!/^\S+@\S+\.\S+$/.test(e)){
+
+    $('#er').textContent=
+      'Entrez une adresse e-mail valide.';
+
+    return
+  }
+
+  if(p.length<6){
+
+    $('#er').textContent=
+      'Le mot de passe doit contenir au moins 6 caractères.';
+
+    return
+  }
+
+  if(!sb){
+
+    S.logged=true;
+
+    go('dashboard');
+
+    return
+  }
+
+  var n=
+    su
+      ?$('#n').value.trim()
+      :'';
+
+  (
+    su
+
+      ?sb.auth.signUp({
+        email:e,
+        password:p,
+        options:{
+          data:{
+            full_name:n
+          }
+        }
+      })
+
+      :sb.auth.signInWithPassword({
+        email:e,
+        password:p
+      })
+
+  ).then(function(r){
+
+    if(r.error){
+
+      $('#er').textContent=
+        su
+          ?'Inscription impossible : '+r.error.message
+          :'Adresse e-mail ou mot de passe incorrect.';
+
+      return
+    }
+
+    if(!r.data.session){
+
+      $('#er').textContent=
+        'Compte créé. Vérifiez votre e-mail pour le confirmer, puis connectez-vous.';
+
+      return
+    }
+
+    S.logged=true;
+    S.uid=r.data.session.user.id;
+
+    ensureSub(S.uid)
+      .then(loadSites)
+      .then(function(){
+
+        go('dashboard')
+
+      })
+
+  })
+}
+
+
+/* =========================================================
+   PUBLICATION
+========================================================= */
+
+function publish(){
+
+  if(S.sub.length<3){
+
+    $('#er').textContent=
+      'L’adresse doit contenir au moins 3 caractères.';
+
+    return
+  }
+
+  if(!sb){
+
+    S.pub=true;
+    S.live=1;
+
+    route();
+
+    return
+  }
+
+  if(!S.sid){
+
+    $('#er').textContent=
+      'Créez d’abord un site depuis « Nouveau site ».';
+
+    return
+  }
+
+  sb
+    .from('webora_sites')
+    .update({
+      subdomain:S.sub,
+      published:true,
+      name:S.name,
+      template:S.tpl,
+      category:tpl().c,
+      content:content()
+    })
+    .eq('id',S.sid)
+    .eq('owner',S.uid)
+    .then(function(r){
+
+      if(r.error){
+
+        $('#er').textContent=
+          r.error.code==='23505'
+            ?'Cette adresse est déjà utilisée.'
+            :'Publication impossible, réessayez.';
+
+        return
+      }
+
+      S.pub=true;
+
+      loadSites().then(route)
+
+    })
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+function anim(){
+
+  if(
+    matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+  )return;
+
+  document
+    .querySelectorAll('.stat b')
+    .forEach(function(b){
+
+      var n=
+        parseInt(
+          b.textContent.replace(/\s/g,''),
+          10
+        );
+
+      var t0=null;
+
+      if(isNaN(n))return;
+
+      function f(t){
+
+        t0=t0||t;
+
+        var k=
+          Math.min(
+            (t-t0)/700,
+            1
+          );
+
+        b.textContent=
+          Math.round(
+            n*(1-Math.pow(1-k,3))
+          ).toLocaleString('fr-FR');
+
+        if(k<1)
+          requestAnimationFrame(f)
+      }
+
+      requestAnimationFrame(f)
+    });
+
+
+  if(!('IntersectionObserver' in window))
+    return;
+
+  var io=
+    new IntersectionObserver(
+      function(es){
+
+        es.forEach(function(e){
+
+          if(e.isIntersecting){
+
+            e.target.classList.add('in');
+
+            io.unobserve(e.target)
+
+          }
+
+        })
+
+      },
+      {threshold:.15}
+    );
+
+
+  document
+    .querySelectorAll(
+      '.steps>div,.plans>.stat'
+    )
+    .forEach(function(el,i){
+
+      el.classList.add('rv');
+
+      el.style.transitionDelay=
+        (i%4)*80+'ms';
+
+      io.observe(el)
+
+    })
+}
+
+
+/* =========================================================
+   ROUTES PROTÉGÉES
+========================================================= */
+
+var PROT=[
+  'dashboard',
+  'categories',
+  'modeles',
+  'editeur',
+  'apercu',
+  'publication'
+];
+
+
+/* =========================================================
+   RESTAURATION LOCAL STORAGE
+========================================================= */
+
+try{
+
+  Object.assign(
+    S,
+    JSON.parse(
+      localStorage.getItem('webora')||'{}'
+    )
+  )
+
+}catch(e){}
+
+
+/* =========================================================
+   HASH CHANGE
+========================================================= */
+
+window.addEventListener(
+  'hashchange',
+  route
+);
+
+
+/* =========================================================
+   SESSION SUPABASE
+========================================================= */
+
+if(sb){
+
+  sb.auth
+    .getSession()
+    .then(function(r){
+
+      var u=
+        r.data.session&&
+        r.data.session.user;
+
+      S.logged=!!u;
+
+      S.uid=
+        u
+          ?u.id
+          :null;
+
+      return u
+        ?ensureSub(u.id).then(loadSites)
+        :0
+
+    })
+    .then(route)
+
+}else{
+
+  route()
+
+}
+
 </script>
+
 </body>
 </html>
